@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
-import imge1 from "../../assests/si.png";
+import imge1 from "../../assests/m.png";
 import imge2 from "../../assests/s.jpg";
 
 const Signup = () => {
@@ -14,9 +14,12 @@ const Signup = () => {
 
   return (
     <div
-      className="h-screen flex items-center justify-center bg-cover bg-center px-4"
-      style={{ backgroundImage: `url(${imge2})` }}
-    >
+    className="h-screen flex items-center justify-center bg-cover bg-center px-4"
+    style={{
+      backgroundImage: `url(${imge2})`,
+       // For cross-browser compatibility
+    }}
+  >
       <div className="flex flex-col bg-orange-400 bg-opacity-55 lg:flex-row w-full lg:w-[70%] h-auto lg:h-[70%] border-4 border-white rounded-xl shadow-lg">
         {/* Left Section */}
         <div className="lg:w-1/2 rounded-t-xl lg:rounded-t-none lg:rounded-l-xl bg-opacity-70 p-4 flex items-center justify-center">
@@ -84,7 +87,7 @@ const Signup = () => {
                   xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"
                   viewBox="0 0 16 16"
-                  className="h-8 w-8 text-gray-600"
+                  className="h-8 w-8 text-gray-100"
                 >
                   {showPassword ? (
                     <path d="M8 3c-3.866 0-7 3.134-7 5s3.134 5 7 5 7-3.134 7-5-3.134-5-7-5Zm0 1.5c1.466 0 2.833.538 3.85 1.404A7.356 7.356 0 0 1 13.5 8c-.271.41-.707.964-1.318 1.512C11.005 10.307 9.52 10.5 8 10.5s-3.005-.193-4.182-1.012C2.707 9.071 2.271 8.516 2 8c.271-.41.707-.964 1.318-1.512C4.995 5.693 6.48 5.5 8 5.5Zm0 2c.69 0 1.25.56 1.25 1.25S8.69 10 8 10s-1.25-.56-1.25-1.25S7.31 7.5 8 7.5Z" />

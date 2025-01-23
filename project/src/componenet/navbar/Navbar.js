@@ -1,13 +1,58 @@
-import React from 'react'
-// import imge1 from "../../assests/icons8-youtube-48.png"
-import { IoSearchSharp } from "react-icons/io5";
-import { FaMicrophone } from "react-icons/fa";
+import React from "react";
 import { RiVideoAddLine } from "react-icons/ri";
 import { IoMdNotificationsOutline } from "react-icons/io";
-// import imge2 from "../../assests/cvfd.jpg"
+import { FaBars } from "react-icons/fa"; // For the mobile menu toggle
+import mad from "../../assests/si.jpg";
 
 const Navbar = () => {
   return (
+    <div
+      style={{ fontFamily: "Poppins" }}
+      className="bg-white flex   w-[85%] items-center px-4  md:px-10 py-3 fixed top-0 left-6  md:left-60 justify-between z-10 shadow-md"
+    >
+      {/* Left Section */}
+      <div className="flex items-center gap-4">
+        {/* Mobile Menu Icon */}
+        <button className="md:hidden text-orange-400 text-2xl">
+          <FaBars />
+        </button>
+
+        {/* Greeting */}
+        <div>
+          <h1 className="text-2xl md:text-3xl text-orange-400 font-bold">
+            Hello Peter 👋
+          </h1>
+          <h2 className="text-black text-sm md:text-xl font-normal">
+            Welcome to Trainee Dashboard
+          </h2>
+        </div>
+      </div>
+
+      {/* Right Section */}
+      <div className="flex place-content-end  gap-4">
+        {/* Action Icons */}
+        {/* <div className="hidden md:flex gap-4">
+          <RiVideoAddLine className="text-gray-500 text-2xl cursor-pointer hover:text-orange-400" />
+          <IoMdNotificationsOutline className="text-gray-500 text-2xl cursor-pointer hover:text-orange-400" />
+        </div> */}
+
+        {/* Profile Picture */}
+        <div>
+          <img
+            className="h-12 w-12 md:h-16 md:w-16 rounded-full bg-cover"
+            src={mad}
+            alt="Profile"
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Navbar;
+
+
+
 //     <div style={{fontFamily:'Poppins'}}>  <nav className="bg-white shadow-md p-4 fixed top-0 w-full z-10">
 //     <div className="container mx-auto flex ">
 // <div>
@@ -57,18 +102,3 @@ const Navbar = () => {
 //     </div>
     
 //   </nav></div>
-
- <div className="bg-white shadow-md p-2 fixed top-0 left-60 w-full z-10">
-        {/* Navbar */}
-        <header className="">
-          <h1 className="text-xl font-bold">Welcome to Trainer </h1>
-        </header>
-
-        {/* Dynamic Content */}
-        <main className="p-6">
-        </main>
-      </div>
-  )
-}
-
-export default Navbar

@@ -3,11 +3,15 @@ import React from 'react';
 import Dashboardpage from '../../pages/dasboard/Dashboardpage';
 import Student from '../../pages/student/Student';
 import Attendance from '../../pages/attened/Attendance';
+import Assignment from '../../pages/assignment/Assignment';
+import ScoreCard from '../../pages/scorecard/ScoreCard';
+import ClassRecording from '../../pages/clssrecording/ClassRecording';
+import Account from '../../pages/account/Account';
 
 const Maincontent = ({ selectedPage }) => {
   return (
     <div className='w-full' style={{ fontFamily: 'Poppins' }}>
-      <div className="ml-64 p-4 mt-16">
+      <div className="ml-1 p-1 mt-16">
         {/* Conditional rendering for different pages */}
         
         {selectedPage === "Dashboard" && (
@@ -17,7 +21,7 @@ const Maincontent = ({ selectedPage }) => {
           </div>
         )}
         
-        {selectedPage === "Student" && (
+        {selectedPage === "Students" && (
           <div className="">
             <h2 className="text-3xl font-bold mb-6"></h2>
             <Student />
@@ -32,31 +36,31 @@ const Maincontent = ({ selectedPage }) => {
         )}
 
         {/* New Sections */}
-        {selectedPage === "Your channel" && (
+        {selectedPage === "Assignments" && (
           <div>
-            <h2 className="text-3xl font-bold mb-6">Your Channel</h2>
-            <p>Your channel content goes here...</p>
+            <h2 className="text-3xl font-bold mb-6"></h2>
+           <Assignment/>
+                   </div>
+        )}
+
+        {selectedPage === "Score Card" && (
+          <div>
+            <h2 className="text-3xl font-bold mb-6"></h2>
+        <ScoreCard/>
           </div>
         )}
 
-        {selectedPage === "History" && (
+        {selectedPage === "Class Recordings" && (
           <div>
-            <h2 className="text-3xl font-bold mb-6">History</h2>
-            <p>History content goes here...</p>
+            <h2 className="text-3xl font-bold mb-6"></h2>
+           <ClassRecording/>
           </div>
         )}
 
-        {selectedPage === "Playlists" && (
+        {selectedPage === "Account" && (
           <div>
-            <h2 className="text-3xl font-bold mb-6">Playlists</h2>
-            <p>Playlists content goes here...</p>
-          </div>
-        )}
-
-        {selectedPage === "Your videos" && (
-          <div>
-            <h2 className="text-3xl font-bold mb-6">Your Videos</h2>
-            <p>Your videos content goes here...</p>
+            <h2 className="text-3xl font-bold mb-6"></h2>
+            <Account/>
           </div>
         )}
 

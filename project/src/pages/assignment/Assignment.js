@@ -1,17 +1,13 @@
 import React, { useState } from "react";
 
-const Student = () => {
+const Assignment = () => {
   const students = [
-    { id: "000001", name: "Donald Jawahar E", course: "UI/UX Designing" },
-    { id: "000002", name: "John Doe", course: "Web Development" },
-    { id: "000003", name: "Jane Smith", course: "Graphic Designing" },
-    // Duplicate entries for demonstration
-    { id: "000004", name: "Alice Johnson", course: "App Development" },
-    { id: "000005", name: "Bob Martin", course: "Cybersecurity" },
-    { id: "000006", name: "Carol Lee", course: "Data Science" },
-    { id: "000007", name: "Donald Jawahar E", course: "UI/UX Designing" },
-    { id: "000008", name: "Donald Jawahar E", course: "UI/UX Designing" },
-    { id: "000009", name: "Donald Jawahar E", course: "UI/UX Designing" },
+    { id: "Loginpage ui", name: "07/03/2025", course: "UI/UX Designing" },
+    { id: "Loginpage ui", name: "07/03/2025", course: "Web Development" },
+    { id: "Loginpage ui", name: "07/03/2025", course: "Graphic Designing" },
+    { id: "Loginpage ui", name: "07/03/2025", course: "App Development" },
+    { id: "Loginpage ui", name: "07/03/2025", course: "Cybersecurity" },
+    { id: "Loginpage ui", name: "07/03/2025", course: "Data Science" },
   ];
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -28,15 +24,42 @@ const Student = () => {
   };
 
   return (
-    <div  style={{ fontFamily: "Poppins" }} className="p-6 bg-gray-100 min-h-screen">
-      <h1 className="text-2xl font-semibold mb-4">Student Enrolled</h1>
+    <div className="p-6 bg-gray-100 min-h-screen">
+  
+      <h1 className="text-2xl font-semibold mb-4">Attendance</h1>
+
+
+      <div className="flex justify-between items-center mb-4">
+
+      <div className="flex items-center">
+  <label htmlFor="date" className="text-gray-700 font-medium">
+    Select Date:
+  </label>
+  <div className="relative">
+    <input
+      type="date"
+      id="date"
+      className="appearance-none w-32 px-1 py-2 text-gray-700 bg-transparent focus:outline-none focus:border-orange-500"
+    />
+  </div>
+</div>
+
+   
+        <button className="bg-blue-500 text-white px-4 py-2 rounded-xl shadow-md hover:bg-blue-600">
+          Download
+        </button>
+
+       
+       
+      </div>cdcvdcvacaswcaws
+
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
           <thead className="bg-orange-500">
             <tr>
-              <th className="px-4 py-2  text-white">Student ID</th>
-              <th className="px-4 py-2 text-white">Student Name</th>
-              <th className="px-4 py-2 text-white">Course</th>
+              <th className="px-4 py-2  text-white">Names if Assignment</th>
+              <th className="px-4 py-2  text-white">Deadline </th>
+              <th className="px-4 py-2  text-white">Topic</th>
               <th className="px-4 py-2  text-white">Action</th>
             </tr>
           </thead>
@@ -44,12 +67,12 @@ const Student = () => {
             {currentRows.map((student, index) => (
               <tr
                 key={index}
-                className="bg-teal-200  even:bg-teal-300 text-gray-800"
+                className="bg-teal-200 even:bg-teal-300 text-gray-800"
               >
-                <td className="px-4 text-center py-2">{student.id}</td>
+                <td className="px-4 text-center py-4">{student.id}</td>
                 <td className="px-4 text-center py-2">{student.name}</td>
                 <td className="px-4 text-center py-2">{student.course}</td>
-                <td className="px-4 text-center py-2 ">
+                <td className="px-4 text-center py-2">
                   <button className="p-1   rounded-full  hover:bg-gray-400 focus:outline-none">
                     <span className="text-lg">⋮</span>
                   </button>
@@ -94,4 +117,27 @@ const Student = () => {
   );
 };
 
-export default Student;
+export default Assignment;
+
+
+
+
+
+// <div className="relative">
+// <div className="flex items-center">
+//   <label htmlFor="date" className="text-gray-700 font-medium mr-2">
+//     Select Date:
+//   </label>
+//   <div className="relative">
+//     <input
+//       type="date"
+//       id="date"
+//       className="appearance-none w-40 px-4 py-2 text-gray-700 bg-transparent border-b-2 border-gray-300 focus:outline-none focus:ring-0 focus:border-orange-500"
+//     />
+//     <FiCalendar
+//       className="absolute right-2 top-2.5 text-gray-500 pointer-events-none"
+//       size={18}
+//     />
+//   </div>
+// </div>
+// </div>
