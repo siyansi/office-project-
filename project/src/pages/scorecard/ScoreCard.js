@@ -69,7 +69,7 @@ const ScoreCard = () => {
             {currentRows.map((row, index) => (
               <tr
                 key={index}
-                className="bg-teal-200 even:bg-teal-300 text-gray-800"
+                className="bg-teal-200 even:bg-teal-300 text-gray-800 transition-transform duration-300 transform hover:-translate-y-2"
               >
                 <td className="px-4 border-b-8 rounded-l-xl  border-white py-2">{row.traineeName}</td>
                 <td className="px-4 border-b-8  border-white py-2">{row.trainerName}</td>
@@ -131,13 +131,13 @@ const ScoreCard = () => {
             </tr>
           </thead>
           <tbody>
-            <tr className="bg-teal-200  ">
+            <tr className="bg-teal-300  ">
               <td className="px-4 py-2 border-b-4 border-r rounded-l-lg border-white font-medium">Trainer Name</td>
               <td className="p  border-b-4 rounded-r-lg border-white">
                 <input
                   type="text"
                   placeholder="Enter trainer name"
-                  className="w-full px-3 py-2 bor  bg-teal-200  rounded- focus:outline-none "
+                  className="w-full px-3 py-2 bor  bg-teal-300  rounded- focus:outline-none "
                 />
               </td>
             </tr>
@@ -151,31 +151,31 @@ const ScoreCard = () => {
                 />
               </td>
             </tr>
-            <tr className="bg-teal-200">
+            <tr className="bg-teal-300">
               <td className="px-4  border-b-4 border-r rounded-l-lg border-white py-2 font-medium">Course</td>
               <td className="px  border-b-4 rounded-r-lg border-white ">
                 <input
                   type="text"
                   placeholder="Enter course name"
-                  className="w-full px-3 py-2 bor  bg-teal-200  rounded- focus:outline-none "
+                  className="w-full px-3 py-2 bor  bg-teal-300  rounded- focus:outline-none "
                 />
               </td>
             </tr>
-            <tr className="bg-gray-200">
+            <tr className="bg-gray-300">
               <td className="px-4  border-b-4 border-r rounded-l-lg border-white py-2 font-medium">Date</td>
               <td className="px-  border-b-4 rounded-r-lg border-white">
                 <input
                   type="date"
-                  className="w-full px-3 py-2 bor  bg-gray-200  rounded- focus:outline-none "
+                  className="w-full px-3 py-2 bor  bg-gray-300  rounded- focus:outline-none "
                 />
               </td>
             </tr>
-            <tr className="bg-teal-200">
+            <tr className="bg-teal-300">
               <td className="px-4  border-b-4 border-r rounded-l-lg border-white py-2 font-medium">Training Time</td>
               <td className="px-  border-b-4 rounded-r-lg border-white">
                 <input
                   type="time"
-                  className="ww-full px-3 py-2 bor  bg-teal-200  rounded- focus:outline-none "
+                  className="ww-full px-3 py-2 bor  bg-teal-300  rounded- focus:outline-none "
                 />
               </td>
             </tr>
@@ -189,13 +189,13 @@ const ScoreCard = () => {
                 />
               </td>
             </tr>
-            <tr className="bg-teal-200">
+            <tr className="bg-teal-300">
               <td className="px-4  border-b-4 border-r rounded-l-lg border-white py-2 font-medium">Work Completed</td>
               <td className="px-  border-b-4 rounded-r-lg border-white">
                 <input 
                   type="text"
                   placeholder="Enter work completed"
-                  className="w-full px-3 py-2 bor  bg-teal-200  rounded- focus:outline-none "
+                  className="w-full px-3 py-2 bor  bg-teal-300  rounded- focus:outline-none "
                 />
               </td>
             </tr>
@@ -209,14 +209,14 @@ const ScoreCard = () => {
                 />
               </td>
             </tr>
-            <tr className="bg-teal-200">
+            <tr className="bg-teal-300">
               <td className="px-4  border-b-4 border-r rounded-l-lg border-white py-2 font-medium">Communication (Out of 5)</td>
               <td className="px-  border-b-4 rounded-r-lg border-white">
                 <input
                   type="number"
                   placeholder="Enter communication score"
                   max="5"
-                  className="w-full px-3 py-2 bor  bg-teal-200  rounded- focus:outline-none "
+                  className="w-full px-3 py-2 bor  bg-teal-300  rounded- focus:outline-none "
                 />
               </td>
             </tr>
@@ -231,14 +231,14 @@ const ScoreCard = () => {
                 />
               </td>
             </tr>
-            <tr className="bg-teal-200">
+            <tr className="bg-teal-300">
               <td className="px-4  border-b-4 border-r rounded-l-lg border-white py-2 font-medium">Attitude (Out of 5)</td>
               <td className="px  border-b-4 rounded-r-lg border-white">
                 <input
                   type="number"
                   placeholder="Enter attitude score"
                   max="5"
-                  className="w-full px-3 py-2 bor  bg-teal-200  rounded- focus:outline-none "
+                  className="w-full px-3 py-2 bor  bg-teal-300  rounded- focus:outline-none "
                 />
               </td>
             </tr>

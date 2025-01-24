@@ -39,21 +39,21 @@ const DashboardPage = () => {
     <div className="p-2 bg-[#fff] min-h-screen">
       {/* Overview Section */}
       <h1 className="text-2xl font-semibold mb-4">Overview</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 ">
         {/* Overview Cards */}
 
-        <div className="p-4 flex justify-between pt-6 bg-blue-300 rounded-xl shadow-lg ">
+        <div className="p-4 flex justify-between pt-6 bg-blue-300 rounded-xl shadow-lg cursor-pointer transition-transform duration-300 transform hover:scale-95 hover:shadow-2xl  ">
           <div>
           <h2 className="text-2xl font-bold text-blue-600">250</h2>
           <p className="text-blue-800">Enrolled Students</p>
           </div>
         
           <span className=" bg-blue-400 rounded-full h-16 w-16">
-          <GrGroup className="w-10 h-10 text-gray-500 mt-3 ml-3 bg-blue-400 " />
+          <GrGroup className="w-10 h-10 text-gray-500 mt-3 ml-3 bg-blue-400  " />
 
           </span>
         </div>
-        <div className="p-4 flex justify-between pt-6 bg-teal-300 rounded-xl shadow-lg ">
+        <div className="p-4 flex justify-between pt-6 bg-teal-300 rounded-xl shadow-lg transition-transform duration-300 transform hover:scale-95 hover:shadow-2xl  cursor-pointer">
           <div>
           <h2 className="text-2xl font-bold text-teal-600">250</h2>
           <p className="text-blue-800">Present Today</p>
@@ -67,7 +67,7 @@ const DashboardPage = () => {
 
 
 
-        <div className="p-4 flex justify-between bg-yellow-300 rounded-xl shadow-lg ">
+        <div className="p-4 flex justify-between bg-yellow-300 rounded-xl shadow-lg  cursor-pointer transition-transform duration-300 transform hover:scale-95 hover:shadow-2xl ">
           <div>
           <h2 className="text-2xl font-bold text-yellow-600">220</h2>
           <p className="text-yellowe-800">Completed Assignments</p>
@@ -79,7 +79,7 @@ const DashboardPage = () => {
           </span>
         </div>
 
-        <div className="p-4 flex justify-between pt-6 bg-pink-300 rounded-2xl shadow-lg ">
+        <div className="p-4 flex justify-between pt-6 bg-pink-300 rounded-2xl shadow-lg  cursor-pointer transition-transform duration-300 transform hover:scale-95 hover:shadow-2xl ">
           <div>
           <h2 className="text-2xl font-bold text-pink-600">230</h2>
           <p className="text-yellowe-800">Passed Exams</p>

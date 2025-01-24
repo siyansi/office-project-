@@ -44,10 +44,10 @@ const Student = () => {
             {currentRows.map((student, index) => (
               <tr
                 key={index}
-                className="bg-teal-200  even:bg-teal-300 text-gray-800"
+                className="bg-teal-200  even:bg-teal-300 text-gray-800 transition-transform duration-300 transform hover:-translate-y-2 rounded-lg "
               >
                 <td className="px-4 border-b-8  rounded-l-xl  border-white text-center py-2">{student.id}</td>
-                <td className="px-4 border-b-8  border-white text-center py-2">{student.name}</td>
+                <td className="px-4 border-b-8   border-white text-center py-2">{student.name}</td>
                 <td className="px-4 border-b-8  border-white text-center py-2">{student.course}</td>
                 <td className="px-4 border-b-8  rounded-r-xl border-white text-center py-2 ">
                   <button className="p-1   rounded-full  hover:bg-gray-400 focus:outline-none">

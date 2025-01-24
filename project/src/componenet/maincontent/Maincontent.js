@@ -11,7 +11,7 @@ import Account from '../../pages/account/Account';
 const Maincontent = ({ selectedPage }) => {
   return (
     <div className='w-full' style={{ fontFamily: 'Poppins' }}>
-      <div className="ml-1 p-1 px-20">
+      <div className="ml-1 p-1 md:px-16 px-2">
         {/* Conditional rendering for different pages */}
         
         {selectedPage === "Dashboard" && (

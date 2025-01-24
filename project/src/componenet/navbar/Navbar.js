@@ -2,20 +2,20 @@ import React from "react";
 import { RiVideoAddLine } from "react-icons/ri";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { FaBars } from "react-icons/fa"; // For the mobile menu toggle
-import mad from "../../assests/si.jpg";
+import mad from "../../assests/55311.jpg";
 
 const Navbar = () => {
   return (
     <div
       style={{ fontFamily: "Poppins" }}
-      className="bg-white flex  w-full items-center px-20  md:px-20 py-3  justify-between z-10 "
+      className="bg-white flex  w-full items-center px-10 pl-20  md:px-20 py-3  justify-between z-10 "
     >
       {/* Left Section */}
       <div className="flex items-center gap-4">
         {/* Mobile Menu Icon */}
-        <button className="md:hidden text-orange-400 text-2xl">
+        {/* <button className="md:hidden text-orange-400 text-2xl">
           <FaBars />
-        </button>
+        </button> */}
 
         {/* Greeting */}
         <div>
