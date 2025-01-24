@@ -1,26 +1,43 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 import imge1 from "../../assests/m.png";
 import imge2 from "../../assests/s.jpg";
+import { IoIosEye } from "react-icons/io";
+import { IoIosEyeOff } from "react-icons/io";
+import "../../App.css"
 
 const Signup = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const handleLogin = () => {
-    // Add any validation logic here before navigating
-    navigate("/dashboard"); // Navigate to the Dashboard
+    // Add basic validation logic
+    if (!username || !password) {
+      setErrorMessage("Username and Password are required");
+      return;
+    }
+
+    if (username === "admin" && password === "1234") {
+      // Successful login
+      setErrorMessage(""); // Clear error message
+      navigate("/dashboard"); // Navigate to the Dashboard
+    } else {
+      // Invalid credentials
+      setErrorMessage("Invalid Username or Password");
+    }
   };
 
   return (
     <div
-    className="h-screen flex items-center justify-center bg-cover bg-center px-4"
-    style={{
-      backgroundImage: `url(${imge2})`,
-       // For cross-browser compatibility
-    }}
-  >
-      <div className="flex flex-col bg-orange-400 bg-opacity-55 lg:flex-row w-full lg:w-[70%] h-auto lg:h-[70%] border-4 border-white rounded-xl shadow-lg">
+      className="h-screen flex items-center justify-center bg-cover bg-center px-4"
+      style={{
+        backgroundImage: `url(${imge2})`,
+      }}
+    >
+      <div className="flex flex-col bg-orange-400 bg-opacity-55 lg:flex-row w-full lg:w-[70%] h-auto lg:h-[80%] border-4 border-[#F5A623] borderd shadow-lg" style={{borderRadius:"5px"}}>
         {/* Left Section */}
         <div className="lg:w-1/2 rounded-t-xl lg:rounded-t-none lg:rounded-l-xl bg-opacity-70 p-4 flex items-center justify-center">
           <img
@@ -38,26 +55,36 @@ const Signup = () => {
             </h1>
 
             {/* Username Input */}
-            <div className="border-b-2 border-black mb-6">
+            <div
+              className={`border-b-2 border-black mb-4 relative ${
+                errorMessage ? "border-red-500" : ""
+              }`}
+            >
               <label className="h-12 ml-2 outline-none focus:outline-none bg-transparent flex items-center gap-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 16 16"
                   fill="currentColor"
-                  className="h-6 w-6   opacity-70"
+                  className="h-6 w-6 opacity-70"
                 >
                   <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
                 </svg>
                 <input
                   type="text"
-                  className=" ml-2 grow bg-transparent outline-none focus:outline-none"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="ml-2 grow bg-transparent outline-none focus:outline-none font-[Poppins]"
                   placeholder="Username"
                 />
               </label>
             </div>
 
             {/* Password Input */}
-            <div className="border-b-2 border-black mb-4 relative">
+            <div
+              className={`border-b-2 border-black mb-2 relative ${
+                errorMessage ? "border-red-500" : ""
+              }`}
+            >
               <label className="h-12 ml-2 bg-transparent flex items-center gap-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -73,14 +100,16 @@ const Signup = () => {
                 </svg>
                 <input
                   type={showPassword ? "text" : "password"}
-                  className="grow ml-2  bg-transparent outline-none"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="grow ml-2 bg-transparent outline-none font-[Poppins]"
                   placeholder="Password"
                 />
               </label>
               {/* Eye Icon */}
               <button
                 type="button"
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 pr-2"
+                className="absolute right-0 top-[60%] transform -translate-y-1/2 pr-2"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 <svg
@@ -90,24 +119,32 @@ const Signup = () => {
                   className="h-8 w-8 text-gray-100"
                 >
                   {showPassword ? (
-                    <path d="M8 3c-3.866 0-7 3.134-7 5s3.134 5 7 5 7-3.134 7-5-3.134-5-7-5Zm0 1.5c1.466 0 2.833.538 3.85 1.404A7.356 7.356 0 0 1 13.5 8c-.271.41-.707.964-1.318 1.512C11.005 10.307 9.52 10.5 8 10.5s-3.005-.193-4.182-1.012C2.707 9.071 2.271 8.516 2 8c.271-.41.707-.964 1.318-1.512C4.995 5.693 6.48 5.5 8 5.5Zm0 2c.69 0 1.25.56 1.25 1.25S8.69 10 8 10s-1.25-.56-1.25-1.25S7.31 7.5 8 7.5Z" />
+                    <IoIosEyeOff className="text-black" size={13} />
                   ) : (
-                    <path d="M2.25 8c.271-.41.707-.964 1.318-1.512C4.995 5.693 6.48 5.5 8 5.5c1.466 0 2.833.538 3.85 1.404.611.548 1.047 1.102 1.318 1.512-.271.41-.707.964-1.318 1.512C11.005 10.307 9.52 10.5 8 10.5s-3.005-.193-4.182-1.012C2.707 9.071 2.271 8.516 2.25 8Zm5.75 0c0-.69-.56-1.25-1.25-1.25S5.5 7.31 5.5 8s.56 1.25 1.25 1.25 1.25-.56 1.25-1.25Z" />
+                    <IoIosEye className="text-black" size={13} />
                   )}
                 </svg>
               </button>
             </div>
 
+            {/* Error Message */}
+         
+
             {/* Forgot Password */}
-            <h3 className="text-sm text-blue-500 cursor-pointer mb-6 text-center">
+            <h3 className="text-sm text-black cursor-pointer font-[Poppins] font-semibold mb-3 text-right">
               Forgot Password?
             </h3>
 
             {/* Login Button */}
+            {errorMessage && (
+              <div className="text-[#fa3d3d] text-sm text-left mb-2 font-[Poppins]">
+                *{errorMessage}
+              </div>
+            )}
             <div className="flex justify-center">
               <button
-                className="bg-blue-500 text-white font-bold py-2 px-6 rounded-md hover:bg-blue-600"
-                onClick={handleLogin} // Call the navigation function
+                className="bg-blue-500 text-black font-bold py-2 px-6 rounded-md hover:bg-blue-600 w-full"
+                onClick={handleLogin}
               >
                 Login
               </button>

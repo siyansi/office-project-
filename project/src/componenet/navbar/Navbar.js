@@ -8,7 +8,7 @@ const Navbar = () => {
   return (
     <div
       style={{ fontFamily: "Poppins" }}
-      className="bg-white flex   w-[85%] items-center px-4  md:px-10 py-3 fixed top-0 left-6  md:left-60 justify-between z-10 shadow-md"
+      className="bg-white flex  w-full items-center px-20  md:px-20 py-3  justify-between z-10 "
     >
       {/* Left Section */}
       <div className="flex items-center gap-4">

@@ -11,25 +11,25 @@ import Account from '../../pages/account/Account';
 const Maincontent = ({ selectedPage }) => {
   return (
     <div className='w-full' style={{ fontFamily: 'Poppins' }}>
-      <div className="ml-1 p-1 mt-16">
+      <div className="ml-1 p-1 px-20">
         {/* Conditional rendering for different pages */}
         
         {selectedPage === "Dashboard" && (
-          <div>
-            <h2 className="text-3xl font-bold mb-6"></h2>
+          <div className='w-full overflow-hidden'>
+      
             <Dashboardpage />
           </div>
         )}
         
         {selectedPage === "Students" && (
-          <div className="">
+          <div className="w-full overflow-hidden">
             <h2 className="text-3xl font-bold mb-6"></h2>
             <Student />
           </div>
         )}
         
         {selectedPage === "Attendance" && (
-          <div>
+          <div className='w-full'>
             <h2 className="text-3xl font-bold mb-6"></h2>
            <Attendance/>
           </div>
@@ -37,35 +37,35 @@ const Maincontent = ({ selectedPage }) => {
 
         {/* New Sections */}
         {selectedPage === "Assignments" && (
-          <div>
+          <div className='w-full'>
             <h2 className="text-3xl font-bold mb-6"></h2>
            <Assignment/>
                    </div>
         )}
 
-        {selectedPage === "Score Card" && (
-          <div>
+        {selectedPage === "Store Card" && (
+          <div className='w-full'>
             <h2 className="text-3xl font-bold mb-6"></h2>
         <ScoreCard/>
           </div>
         )}
 
         {selectedPage === "Class Recordings" && (
-          <div>
+          <div className='w-full'>
             <h2 className="text-3xl font-bold mb-6"></h2>
            <ClassRecording/>
           </div>
         )}
 
         {selectedPage === "Account" && (
-          <div>
+          <div className='w-full'>
             <h2 className="text-3xl font-bold mb-6"></h2>
             <Account/>
           </div>
         )}
 
         {selectedPage === "Watch Later" && (
-          <div>
+          <div className='w-full'>
             <h2 className="text-3xl font-bold mb-6">Watch Later</h2>
             <p>Watch Later content goes here...</p>
           </div>

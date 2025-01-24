@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from './componenet/navbar/Navbar';
-import Sidebar from './componenet/Sidebar/Sidebar';
-import Maincontent from './componenet/maincontent/Maincontent';
-import Dashboardpage from './pages/dasboard/Dashboardpage';
+import Navbar from "./componenet/navbar/Navbar";
+import Sidebar from "./componenet/Sidebar/Sidebar";
+import Maincontent from "./componenet/maincontent/Maincontent";
+import Dashboardpage from "./pages/dasboard/Dashboardpage";
 import Signup from "./componenet/signup/Signup";
 
 function App() {
-  const [selectedPage, setSelectedPage] = useState("Home");
+  const [selectedPage, setSelectedPage] = useState("Dashboard");
+
+  console.log(selectedPage);
 
   const handleSidebarClick = (page) => {
     setSelectedPage(page);
@@ -23,10 +25,10 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <div className="flex flex-col h-screen">
-              <Navbar />
-              <div className="flex flex-1">
-                <Sidebar onMenuClick={handleSidebarClick} />
+            <div className="flex w-full overflow-x-hidden">
+              <Sidebar onMenuClick={handleSidebarClick} />
+              <div className="w-full">
+                <Navbar />
                 <Maincontent selectedPage={selectedPage} />
               </div>
             </div>
@@ -37,4 +39,4 @@ function App() {
   );
 }
 
-export default App;
+export default App;
