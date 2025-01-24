@@ -28,16 +28,16 @@ const Student = () => {
   };
 
   return (
-    <div  style={{ fontFamily: "Poppins" }} className="p-6 bg-gray-100 min-h-screen">
+    <div  style={{ fontFamily: "Poppins" }} className="p-6 min-h-screen w-full">
       <h1 className="text-2xl font-semibold mb-4">Student Enrolled</h1>
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+        <table className="w-full bg-white shadow-md rounded-lg overflow-hidden">
           <thead className="bg-orange-500">
             <tr>
-              <th className="px-4 py-2  text-white">Student ID</th>
-              <th className="px-4 py-2 text-white">Student Name</th>
-              <th className="px-4 py-2 text-white">Course</th>
-              <th className="px-4 py-2  text-white">Action</th>
+              <th className="px-4 py-2 border-b-8  border-white text-white">Student ID</th>
+              <th className="px-4 py-2 border-b-8  border-white text-white">Student Name</th>
+              <th className="px-4 py-2 border-b-8  border-white text-white">Course</th>
+              <th className="px-4 py-2 border-b-8  border-white text-white">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -46,10 +46,10 @@ const Student = () => {
                 key={index}
                 className="bg-teal-200  even:bg-teal-300 text-gray-800"
               >
-                <td className="px-4 text-center py-2">{student.id}</td>
-                <td className="px-4 text-center py-2">{student.name}</td>
-                <td className="px-4 text-center py-2">{student.course}</td>
-                <td className="px-4 text-center py-2 ">
+                <td className="px-4 border-b-8  rounded-l-xl  border-white text-center py-2">{student.id}</td>
+                <td className="px-4 border-b-8  border-white text-center py-2">{student.name}</td>
+                <td className="px-4 border-b-8  border-white text-center py-2">{student.course}</td>
+                <td className="px-4 border-b-8  rounded-r-xl border-white text-center py-2 ">
                   <button className="p-1   rounded-full  hover:bg-gray-400 focus:outline-none">
                     <span className="text-lg">⋮</span>
                   </button>

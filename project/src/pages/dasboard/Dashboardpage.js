@@ -36,7 +36,7 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <div className="p-2 bg-[#fff] min-h-screen">
       {/* Overview Section */}
       <h1 className="text-2xl font-semibold mb-4">Overview</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -98,13 +98,13 @@ const DashboardPage = () => {
       <h1 className="text-2xl font-semibold mb-4">Performance Progress</h1>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
         {/* Assignments Doughnut Chart */}
-        <div className="p-8 mx-8 my-8 bg-orange-300 rounded-lg shadow-md">
+        <div className="p-8 bg-orange-300 rounded-lg shadow-md">
           <h2 className="text-lg font-semibold mb-3">Assignments</h2>
           <Doughnut data={doughnutData} />
         </div>
 
         {/* Attendance Line Chart */}
-        <div className="p-6 bg-pink-300 rounded-lg shadow-md mx-8 my-8 ">
+        <div className="p-6 bg-pink-300 rounded-lg shadow-md ">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-semibold">Attendance</h2>
             <select className="p-2 rounded bg-white shadow">

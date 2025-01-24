@@ -10,9 +10,10 @@ import { MdAssignmentAdd } from "react-icons/md";
 import { GrScorecard } from "react-icons/gr";
 import { HiOutlineLogout } from "react-icons/hi";
 import { FaBars } from "react-icons/fa";
-
+import appLogo from "../../assests/Ellipse 1.svg";
 const Sidebar = ({ onMenuClick }) => {
   const [isOpen, setIsOpen] = useState(false); // State to control sidebar visibility on mobile screens
+  const [selectedPage, setSelectedPage] = useState("Dashboard"); // State to track the selected page
 
   const menuItems = [
     { name: "Dashboard", icon: <MdSpaceDashboard /> },
@@ -22,7 +23,7 @@ const Sidebar = ({ onMenuClick }) => {
     { name: "Store Card", icon: <GrScorecard /> },
     { name: "Class Recordings", icon: <MdOutlineLaptopChromebook /> },
     { name: "Account", icon: <MdAccountCircle /> },
-    { name: "Logout", icon: <HiOutlineLogout /> },
+    // { name: "Logout", icon: <HiOutlineLogout /> },
   ];
 
   // Toggle the sidebar visibility
@@ -30,32 +31,46 @@ const Sidebar = ({ onMenuClick }) => {
     setIsOpen(!isOpen);
   };
 
+  // Handle menu item click
+  const handleMenuClick = (page) => {
+    setSelectedPage(page);
+    onMenuClick(page); // Call the parent callback if provided
+  };
+
   return (
     <div style={{ fontFamily: "Poppins" }} className="flex">
       {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 h-full w-60 bg-orange-400 shadow-md p-4 transition-transform transform z-50 ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0`}
+        className={`fixed top-0 left-0 h-full w-60 bg-[#F5A623] shadow-md p-4  z-50  `}
       >
         {/* Header */}
-        <header className="text-center">
-          <h1 className="text-xl font-bold">VETRI TECHNOLOGY SOLUTIONS</h1>
-        </header>
+        <div className="flex flex-col items-center gap-3 mb-3">
+          <img src={appLogo} alt="app-logo" className="w-[80px] h-[80px]" />
 
+          <header className="text-center">
+            <h1 className="text-xl font-bold">VETRI TECHNOLOGY SOLUTIONS</h1>
+          </header>
+        </div>
+        <hr />
         {/* Menu Items */}
-        <ul className="mt-12">
+        <ul className="mt-4">
           {menuItems.map((item) => (
             <li
               key={item.name}
-              className="mb-2 flex items-center cursor-pointer hover:bg-cyan-300 p-2 font-semibold rounded-lg"
-              onClick={() => onMenuClick(item.name)}
+              className={`mb-2 flex items-center cursor-pointer p-2 font-semibold rounded-[3px] transition-all ${
+                selectedPage === item.name
+                  ? "bg-[#50E3C2] text-[#000] border-l-8 border-l-[#4A90E2]"
+                  : "hover:bg-[#dddddd8f]"
+              }`}
+              onClick={() => handleMenuClick(item.name)}
             >
               <span className="mr-3 text-2xl">{item.icon}</span>
               {item.name}
             </li>
+
           ))}
         </ul>
+        <button className="mb-2 ml-1 flex items-center cursor-pointer w-full hover:bg-[#dddddd8f]  text-[#000]  p-2 font-semibold rounded-[3px] transition-all"> <HiOutlineLogout className="mr-3 text-2xl" />Logout</button>
       </div>
 
       {/* Main Content */}
@@ -69,20 +84,6 @@ const Sidebar = ({ onMenuClick }) => {
         </button>
 
         {/* Content */}
-        {/* <div className="p-8">
-    
-          <h1 className="text-3xl font-bold">Main Content</h1>
-          <p className="mt-4">
-            Scrollable content goes here. Add your main page content to this
-            section. This content will scroll independently while the sidebar
-            remains fixed on the left.
-          </p>
-          <div className="mt-10">
-            {[...Array(50)].map((_, index) => (
-              <p key={index}>This is a sample scrollable paragraph {index + 1}.</p>
-            ))}
-          </div>
-        </div> */}
       </div>
 
       {/* Overlay for mobile view */}

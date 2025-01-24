@@ -24,7 +24,7 @@ const Attendance = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <div className="p-6 min-h-screen">
   
       <h1 className="text-2xl font-semibold mb-4">Attendance</h1>
 
@@ -57,10 +57,10 @@ const Attendance = () => {
         <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
           <thead className="bg-orange-500">
             <tr>
-              <th className="px-4 py-2 text-left text-white">Student ID</th>
-              <th className="px-4 py-2 text-left text-white">Student Name</th>
-              <th className="px-4 py-2 text-left text-white">Course</th>
-              <th className="px-4 py-2 text-center text-white">Status</th>
+              <th className="px-4 border-b-8   border-white py-2 text-left text-white">Student ID</th>
+              <th className="px-4 border-b-8  border-white py-2 text-left text-white">Student Name</th>
+              <th className="px-4 border-b-8  border-white py-2 text-left text-white">Course</th>
+              <th className="px-4 border-b-8  border-white py-2 text-center text-white">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -69,14 +69,14 @@ const Attendance = () => {
                 key={index}
                 className="bg-teal-200 even:bg-teal-300 text-gray-800"
               >
-                <td className="px-4 py-4">{student.id}</td>
-                <td className="px-4 py-2">{student.name}</td>
-                <td className="px-4 py-2">{student.course}</td>
-                <td className="px-4 py-2 text-center">
-                  <button className="bg-green-500 text-white px-3 py-1 rounded-lg shadow-md hover:bg-green-600 mr-2">
+                <td className="px-4 border-b-8 rounded-l-xl border-white py-4">{student.id}</td>
+                <td className="px-4 border-b-8   border-white py-2">{student.name}</td>
+                <td className="px-4 border-b-8  border-white py-2">{student.course}</td>
+                <td className="px-4 border-b-8   rounded-r-2xl  border-white py-2 text-center">
+                  <button className="bg-green-500  text-white px-3 py-1 text-sm  rounded-lg shadow-md hover:bg-green-600 mr-2">
                     Present
                   </button>
-                  <button className="bg-red-500 text-white px-3 py-1 rounded-lg shadow-md hover:bg-red-600">
+                  <button className="bg-red-500 text-white px-3 py-1 text-sm rounded-lg shadow-md hover:bg-red-600">
                     Absent
                   </button>
                 </td>
