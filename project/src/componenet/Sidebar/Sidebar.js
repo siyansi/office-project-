@@ -11,9 +11,13 @@ import { GrScorecard } from "react-icons/gr";
 import { HiOutlineLogout } from "react-icons/hi";
 import { FaBars } from "react-icons/fa";
 import appLogo from "../../assests/Ellipse 1.svg";
+import { useNavigate } from "react-router-dom"; // Use navigate from React Router
+
 const Sidebar = ({ onMenuClick }) => {
-  const [isOpen, setIsOpen] = useState(false); // State to control sidebar visibility on mobile screens
-  const [selectedPage, setSelectedPage] = useState("Dashboard"); // State to track the selected page
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedPage, setSelectedPage] = useState("Dashboard");
+  const [showLogoutModal, setShowLogoutModal] = useState(false); // State for modal visibility
+  const navigate = useNavigate(); // Initialize navigate
 
   const menuItems = [
     { name: "Dashboard", icon: <MdSpaceDashboard /> },
@@ -23,37 +27,53 @@ const Sidebar = ({ onMenuClick }) => {
     { name: "Store Card", icon: <GrScorecard /> },
     { name: "Class Recordings", icon: <MdOutlineLaptopChromebook /> },
     { name: "Account", icon: <MdAccountCircle /> },
-    // { name: "Logout", icon: <HiOutlineLogout /> },
   ];
 
-  // Toggle the sidebar visibility
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
+    document.body.style.overflow = isOpen ? "auto" : "hidden";
   };
 
-  // Handle menu item click
   const handleMenuClick = (page) => {
     setSelectedPage(page);
-    onMenuClick(page); // Call the parent callback if provided
+    onMenuClick(page);
+    if (window.innerWidth <= 768) toggleSidebar();
+  };
+
+  // Handle Logout button click
+  const handleLogoutClick = () => {
+    setShowLogoutModal(true); // Show the confirmation modal
+  };
+
+  // Handle Yes button click in the modal (navigate to signup page)
+  const handleLogoutYes = () => {
+    setShowLogoutModal(false); // Close the modal
+    navigate("/"); // Redirect to signup page using navigate
+  };
+
+  // Handle No button click in the modal (close the modal)
+  const handleLogoutNo = () => {
+    setShowLogoutModal(false); // Close the modal
   };
 
   return (
-    <div style={{ fontFamily: "Poppins" }} className="flex">
+    <div className="flex">
       {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 h-full w-60 bg-[#F5A623] shadow-md p-4  z-50  `}
+        className={`fixed top-0 left-0 h-full w-60 bg-[#F5A623] shadow-md p-4 z-50 transition-transform duration-300 ease-in-out transform ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        } md:translate-x-0`}
       >
         {/* Header */}
         <div className="flex flex-col items-center gap-3 mb-3">
           <img src={appLogo} alt="app-logo" className="w-[80px] h-[80px]" />
-
           <header className="text-center">
             <h1 className="text-xl font-bold">VETRI TECHNOLOGY SOLUTIONS</h1>
           </header>
         </div>
         <hr />
         {/* Menu Items */}
-        <ul className="mt-4">
+        <ul className="mt-4 overflow-y-auto">
           {menuItems.map((item) => (
             <li
               key={item.name}
@@ -67,14 +87,19 @@ const Sidebar = ({ onMenuClick }) => {
               <span className="mr-3 text-2xl">{item.icon}</span>
               {item.name}
             </li>
-
           ))}
         </ul>
-        <button className="mb-2 ml-1 flex items-center cursor-pointer w-full hover:bg-[#dddddd8f]  text-[#000]  p-2 font-semibold rounded-[3px] transition-all"> <HiOutlineLogout className="mr-3 text-2xl" />Logout</button>
+        <button
+          className="mb-2 ml-1 flex items-center cursor-pointer w-full hover:bg-[#dddddd8f] text-[#000] p-2 font-semibold rounded-[3px] transition-all"
+          onClick={handleLogoutClick} // Open the logout confirmation modal
+        >
+          <HiOutlineLogout className="mr-3 text-2xl" />
+          Logout
+        </button>
       </div>
 
       {/* Main Content */}
-      <div className="ml- w-full overflow-y-auto md:ml-60">
+      <div className="w-full ml-0 md:ml-60">
         {/* Mobile Menu Button */}
         <button
           className="md:hidden fixed top-4 left-4 z-50 bg-orange-500 text-white p-3 rounded-lg shadow-lg"
@@ -82,16 +107,37 @@ const Sidebar = ({ onMenuClick }) => {
         >
           <FaBars className="text-2xl" />
         </button>
-
-        {/* Content */}
       </div>
 
-      {/* Overlay for mobile view */}
+      {/* Overlay for Mobile View */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
           onClick={toggleSidebar}
         ></div>
+      )}
+
+      {/* Confirmation Modal */}
+      {showLogoutModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-80">
+            <h2 className="text-xl font-semibold text-center mb-4">Are you sure you want to logout?</h2>
+            <div className="flex justify-around  ">
+              <button
+                onClick={handleLogoutYes}
+                className="bg-blue-500 text-white px-4 py-1 rounded-md hover:bg-blue-600"
+              >
+                Yes
+              </button>
+              <button
+                onClick={handleLogoutNo}
+                className="bg-red-500 text-white px-4 py-1 rounded-md hover:bg-red-600"
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
