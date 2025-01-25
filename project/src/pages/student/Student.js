@@ -5,7 +5,6 @@ const Student = () => {
     { id: "000001", name: "Donald Jawahar E", course: "UI/UX Designing" },
     { id: "000002", name: "John Doe", course: "Web Development" },
     { id: "000003", name: "Jane Smith", course: "Graphic Designing" },
-    // Duplicate entries for demonstration
     { id: "000004", name: "Alice Johnson", course: "App Development" },
     { id: "000005", name: "Bob Martin", course: "Cybersecurity" },
     { id: "000006", name: "Carol Lee", course: "Data Science" },
@@ -28,29 +27,43 @@ const Student = () => {
   };
 
   return (
-    <div  style={{ fontFamily: "Poppins" }} className="p-6 min-h-screen w-full">
+    <div style={{ fontFamily: "Poppins" }} className="p-6 min-h-screen w-full">
       <h1 className="text-2xl font-semibold mb-4">Student Enrolled</h1>
       <div className="overflow-x-auto">
         <table className="w-full bg-white shadow-md rounded-lg overflow-hidden">
-          <thead className="bg-orange-500">
+          <thead className="bg-[#F5A623]">
             <tr>
-              <th className="px-4 py-2 border-b-8  border-white text-white">Student ID</th>
-              <th className="px-4 py-2 border-b-8  border-white text-white">Student Name</th>
-              <th className="px-4 py-2 border-b-8  border-white text-white">Course</th>
-              <th className="px-4 py-2 border-b-8  border-white text-white">Action</th>
+              <th className="px-4 py-2 border-b-4 border-white text-white text-sm md:text-base">
+                Student ID
+              </th>
+              <th className="px-4 py-2 border-b-4 border-white text-white text-sm md:text-base">
+                Student Name
+              </th>
+              <th className="px-4 py-2 border-b-4 border-white text-white text-sm md:text-base">
+                Course
+              </th>
+              <th className="px-4 py-2 border-b-4 border-white text-white text-sm md:text-base">
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>
             {currentRows.map((student, index) => (
               <tr
                 key={index}
-                className="bg-teal-200  even:bg-teal-300 text-gray-800 transition-transform duration-300 transform hover:-translate-y-2 rounded-lg "
+                className="bg-[#50E3C2] text-gray-800 transition-transform duration-300 transform hover:-translate-y-2 rounded-lg"
               >
-                <td className="px-4 border-b-8  rounded-l-xl  border-white text-center py-2">{student.id}</td>
-                <td className="px-4 border-b-8   border-white text-center py-2">{student.name}</td>
-                <td className="px-4 border-b-8  border-white text-center py-2">{student.course}</td>
-                <td className="px-4 border-b-8  rounded-r-xl border-white text-center py-2 ">
-                  <button className="p-1   rounded-full  hover:bg-gray-400 focus:outline-none">
+                <td className="px-4 border-b-4 rounded-l-lg border-white text-center py-2 text-xs md:text-sm">
+                  {student.id}
+                </td>
+                <td className="px-4 border-b-4 border-white text-center py-2 text-xs md:text-sm">
+                  {student.name}
+                </td>
+                <td className="px-4 border-b-4 border-white text-center py-2 text-xs md:text-sm">
+                  {student.course}
+                </td>
+                <td className="px-4 border-b-4 rounded-r-lg border-white text-center py-2 text-xs md:text-sm">
+                  <button className="p-1 rounded-full hover:bg-gray-400 focus:outline-none">
                     <span className="text-lg">⋮</span>
                   </button>
                 </td>

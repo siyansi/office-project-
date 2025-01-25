@@ -56,7 +56,7 @@ const ScoreCard = () => {
 
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-          <thead className="bg-orange-500">
+          <thead className="bg-[#F5A623] ">
             <tr>
               <th className="px-4 py-2 border-b-8   border-white text-left text-white">Trainee Name</th>
               <th className="px-4 py-2 border-b-8  border-white text-left text-white">Trainer Name</th>
@@ -69,10 +69,10 @@ const ScoreCard = () => {
             {currentRows.map((row, index) => (
               <tr
                 key={index}
-                className="bg-teal-200 even:bg-teal-300 text-gray-800 transition-transform duration-300 transform hover:-translate-y-2"
+                className="bg-[#50E3C2] text-gray-800 "
               >
                 <td className="px-4 border-b-8 rounded-l-xl  border-white py-2">{row.traineeName}</td>
-                <td className="px-4 border-b-8  border-white py-2">{row.trainerName}</td>
+                <td className="px-4 border-b-8   border-white py-2">{row.trainerName}</td>
                 <td className="px-4 border-b-8  border-white py-2">{row.course}</td>
                 <td className="px-4 border-b-8  border-white py-2 text-center">{row.totalScore}</td>
                 <td className="px-4 border-b-8 rounded-r-xl border-white py-2 text-center">
@@ -119,7 +119,7 @@ const ScoreCard = () => {
       {/* Modal */}
       {isModalOpen && (
   <div className="fixed inset-0 flex  p-12 justify-center bg-black bg-opacity-50 z-50">
-    <div className="bg-white h-[%] rounded-lg p-3 w-[50%]   ">
+    <div className="bg-white h-[%] rounded-lg p-3 md:w-[50%]   ">
       <h2 className="text-xl font-semibold mb-4 text-center">Create Score Card</h2>
 
       <div className="overflow-x-auto rounded-xl  p-">
@@ -141,7 +141,7 @@ const ScoreCard = () => {
                 />
               </td>
             </tr>
-            <tr className="bg-gray-200 ">
+            <tr className="bg-gray-200  ">
               <td className="px-4 py-2 border-r rounded-l-lg border-b-4 border-white font-medium">Trainee Name</td>
               <td className="px-  border-b-4 rounded-r-lg border-white">
                 <input
