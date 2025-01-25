@@ -40,15 +40,15 @@ const Account = () => {
       </div>
 
       {/* Staff Details Table */}
-      <div className="bg-white shadow-md rounded-lg p-4">
-        <table className="w-full">
+      <div className="bg-white shadow-md rounded-lg md:p-4 pr-2 pl-2 ">
+        <table className="w-full  ">
           <thead>
-            <tr className="border-b border-r  ">
+            <tr className="border-b border-r   ">
               <th className="text-left border-r border-b-4 border-white  rounded-l-xl  bg-teal-300  p-2">Field</th>
               <th className="text-left pl-12 border-r border-b-4 border-white  rounded-r-xl  bg-teal-300   p-2">Details</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className=''>
             <tr className="border-b  ">
               <td className="p-2 border-r border-b-4 border-white  rounded-l-xl  bg-gray-200  font-semibold">Name</td>
               <td className="p-2  pl-10 border-r border-b-4 border-white  rounded-r-xl  bg-gray-200  ">{staffDetails.name}</td>
