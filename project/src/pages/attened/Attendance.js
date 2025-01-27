@@ -86,11 +86,11 @@ const Attendance = () => {
                 <td className="px-4 py-3 border-b-8 border-white rounded-l-xl text-sm md:text-base">{student.id}</td>
                 <td className="px-4 py-2  border-b-8 border-white text-sm md:text-base">{student.name}</td>
                 <td className="px-4 py-2 border-b-8 border-white text-sm md:text-base">{student.course}</td>
-                <td className="px-4 py-2 border-b-8 border-white rounded-r-xl  text-center">
-                  <button className="bg-green-500 text-white px-3 py-1 text-xs md:text-sm rounded-md shadow-md hover:bg-green-600">
+                <td className="px-4 py-2 border-b-8  border-white rounded-r-xl  text-center">
+                  <button className="bg-green-500 text-white px-3 mb-1 py-1 text-xs md:text-sm rounded-md shadow-md hover:bg-green-600">
                     Present
                   </button>
-                  <button className="bg-red-500 text-white px-3 py-1 text-xs md:text-sm rounded-md shadow-md hover:bg-red-600 ml-2">
+                  <button className="bg-red-500 text-white px-3 py-1 text-xs md:text-sm rounded-md shadow-md hover:bg-red-600 md:ml-2">
                     Absent
                   </button>
                 </td>

@@ -93,7 +93,7 @@ const Assignment = () => {
             {currentRows.map((student, index) => (
               <tr
                 key={index}
-                className=" transform rounded-lg bg-[#50E3C2] text-gray-800"
+                className=" transform rounded-lg bg-[#50E3C2] text-gray-800 transition-all duration-300 hover:bg-teal-400"
               >
                 <td className="px-4 py-2 border-b-8 rounded-l-xl border-white text-center">
                   {student.id}
