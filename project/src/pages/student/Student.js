@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const Student = () => {
-  const students = [
+  const [students, setStudents] = useState([
     { id: "000001", name: "Donald Jawahar E", course: "UI/UX Designing" },
     { id: "000002", name: "John Doe", course: "Web Development" },
     { id: "000003", name: "Jane Smith", course: "Graphic Designing" },
@@ -11,9 +11,10 @@ const Student = () => {
     { id: "000007", name: "Donald Jawahar E", course: "UI/UX Designing" },
     { id: "000008", name: "Donald Jawahar E", course: "UI/UX Designing" },
     { id: "000009", name: "Donald Jawahar E", course: "UI/UX Designing" },
-  ];
+  ]);
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [actionRow, setActionRow] = useState(null); // To track the row where the action button is active
   const rowsPerPage = 5;
 
   // Pagination Logic
@@ -24,6 +25,12 @@ const Student = () => {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+    setActionRow(null); // Close any active action menu when changing pages
+  };
+
+  const handleDelete = (id) => {
+    setStudents(students.filter((student) => student.id !== id));
+    setActionRow(null); // Close the action menu after deletion
   };
 
   return (
@@ -33,39 +40,52 @@ const Student = () => {
         <table className="w-full bg-white shadow-md rounded-lg overflow-hidden">
           <thead className="bg-[#F5A623]">
             <tr>
-              <th className="px-4 py-2 border-b-4 border-white text-white text-sm md:text-base">
+              <th className="px-4 py-2 border-b-8 border-white text-white text-sm md:text-base">
                 Student ID
               </th>
-              <th className="px-4 py-2 border-b-4 border-white text-white text-sm md:text-base">
+              <th className="px-4 py-2 border-b-8 border-white text-white text-sm md:text-base">
                 Student Name
               </th>
-              <th className="px-4 py-2 border-b-4 border-white text-white text-sm md:text-base">
+              <th className="px-4 py-2 border-b-8 border-white text-white text-sm md:text-base">
                 Course
               </th>
-              <th className="px-4 py-2 border-b-4 border-white text-white text-sm md:text-base">
+              <th className="px-4 py-2 border-b-8 border-white text-white text-sm md:text-base">
                 Action
               </th>
-            </tr>
+            </tr> 
           </thead>
           <tbody>
-            {currentRows.map((student, index) => (
+            {currentRows.map((student) => (
               <tr
-                key={index}
-                className="bg-[#50E3C2] text-gray-800 transition-transform duration-300 transform hover:-translate-y-2 rounded-lg"
+                key={student.id}
+                className="bg-[#50E3C2] text-gray-800 rounded-lg transition-all duration-300 hover:bg-teal-400"
               >
-                <td className="px-4 border-b-4 rounded-l-lg border-white text-center py-2 text-xs md:text-sm">
+                <td className="px-4 border-b-8 rounded-l-xl border-white text-center py-1 text-xs md:text-sm">
                   {student.id}
                 </td>
-                <td className="px-4 border-b-4 border-white text-center py-2 text-xs md:text-sm">
+                <td className="px-4 border-b-8 border-white text-center py-2 text-xs md:text-sm">
                   {student.name}
                 </td>
-                <td className="px-4 border-b-4 border-white text-center py-2 text-xs md:text-sm">
+                <td className="px-4 border-b-8 border-white text-center py-2 text-xs md:text-sm">
                   {student.course}
                 </td>
-                <td className="px-4 border-b-4 rounded-r-lg border-white text-center py-2 text-xs md:text-sm">
-                  <button className="p-1 rounded-full hover:bg-gray-400 focus:outline-none">
+                <td className="px-4 border-b-8 rounded-r-xl border-white text-center py-2 text-xs md:text-sm relative">
+                  <button
+                    onClick={() =>
+                      setActionRow(actionRow === student.id ? null : student.id)
+                    }
+                    className="p-1 rounded-full hover:bg-gray-400 focus:outline-none"
+                  >
                     <span className="text-lg">⋮</span>
                   </button>
+                  {actionRow === student.id && (
+                    <button
+                      onClick={() => handleDelete(student.id)}
+                      className="absolute top-8 left-1/2 transform -translate-x-1/2 px-3 py-1 bg-red-500 text-white rounded-md shadow-md hover:bg-red-600"
+                    >
+                      Delete
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
