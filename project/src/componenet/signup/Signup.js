@@ -4,29 +4,54 @@ import imge1 from "../../assests/m.png";
 import imge2 from "../../assests/s.jpg";
 import { IoIosEye } from "react-icons/io";
 import { IoIosEyeOff } from "react-icons/io";
-import "../../App.css"
+import Cookies from 'js-cookie';  // Make sure to install 'js-cookie'
+import { jwtDecode } from 'jwt-decode'; // For newer versions
 
+import "../../App.css";
+import axios from "axios";
 const Signup = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const [userRole,setUserRole] = useState("")
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     // Add basic validation logic
-    if (!username || !password) {
-      setErrorMessage("Username and Password are required");
-      return;
-    }
-
-    if (username === "admin" && password === "1234") {
-      // Successful login
-      setErrorMessage(""); // Clear error message
-      navigate("/dashboard"); // Navigate to the Dashboard
-    } else {
-      // Invalid credentials
-      setErrorMessage("Invalid Username or Password");
+    try {
+      if (!username || !password) {
+        setErrorMessage("Username and Password are required");
+        return;
+      }
+  
+      // Make the request and await response
+      const res = await axios.post("http://localhost:5005/auth/user/login", {
+        email:username,  // Assuming you use 'username' instead of 'email' in the body
+        password,
+      });
+  
+      console.log("Login response:", res);
+  
+      // Check the response status (200 OK) before navigating
+      if (res.status === 200) {
+        // Store token in cookies (for 1 day)
+        Cookies.set("token", res.data.token, { expires: 1 });
+        const decodedToken = jwtDecode(res.data.token);
+        console.log("Decoded Token:", decodedToken);
+  
+        // Store the decoded role in the state
+        const userRole = decodedToken.role;
+        console.log(userRole)
+        setUserRole(userRole);
+        // Redirect to the dashboard
+        navigate("/dashboard");
+      } else {
+        setErrorMessage("Invalid login response");
+      }
+    } catch (error) {
+      console.log("Login error:", error);
+      setErrorMessage("Login failed. Please try again.");
     }
   };
 
@@ -37,7 +62,10 @@ const Signup = () => {
         backgroundImage: `url(${imge2})`,
       }}
     >
-      <div className="flex flex-col bg-orange-400 bg-opacity-55 lg:flex-row w-full lg:w-[70%] h-auto lg:h-[80%] border-4 border-[#F5A623] borderd shadow-lg" style={{borderRadius:"5px"}}>
+      <div
+        className="flex flex-col bg-orange-400 bg-opacity-55 lg:flex-row w-full lg:w-[70%] h-auto lg:h-[80%] border-4 border-[#F5A623] borderd shadow-lg"
+        style={{ borderRadius: "5px" }}
+      >
         {/* Left Section */}
         <div className="lg:w-1/2 rounded-t-xl lg:rounded-t-none lg:rounded-l-xl bg-opacity-70 p-4 flex items-center justify-center">
           <img
@@ -128,7 +156,6 @@ const Signup = () => {
             </div>
 
             {/* Error Message */}
-         
 
             {/* Forgot Password */}
             <h3 className="text-sm text-black cursor-pointer font-[Poppins] font-semibold mb-3 text-right">

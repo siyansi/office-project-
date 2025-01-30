@@ -5,8 +5,13 @@ import { GrGroup } from "react-icons/gr";
 import { CgProfile } from "react-icons/cg";
 import { IoIosPaper } from "react-icons/io";
 import { FaListCheck } from "react-icons/fa6";
+import { useSelector } from "react-redux";
 
 const DashboardPage = () => {
+  
+  const students = useSelector((state) => state.students.studentList);
+
+
   // Doughnut Chart Data
   const doughnutData = {
     labels: ["Completed Assignments", "Not Completed Assignments", "In Progress"],
@@ -44,7 +49,7 @@ const DashboardPage = () => {
 
         <div className="p-4 flex justify-between pt-6 bg-blue-300 rounded-xl shadow-lg cursor-pointer transition-transform duration-300 transform hover:scale-95 hover:shadow-2xl  ">
           <div>
-          <h2 className="text-2xl font-bold text-blue-600">250</h2>
+          <h2 className="text-2xl font-bold text-blue-600">{students.length}</h2>
           <p className="text-blue-800">Enrolled Students</p>
           </div>
         
