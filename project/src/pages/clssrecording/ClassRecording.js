@@ -74,7 +74,7 @@ const ClassRecordings = () => {
   const openModal = (video) => {
     setCurrentVideo(video);
     setModalOpen(true);
-  };
+  }
 
   // Function to close the modal
   const closeModal = () => {

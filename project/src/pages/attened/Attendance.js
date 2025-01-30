@@ -1,17 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const Attendance = () => {
-  const students = [
-    { id: "000001", name: "Donald Jawahar E", course: "UI/UX Designing" },
-    { id: "000002", name: "John Doe", course: "Web Development" },
-    { id: "000003", name: "Jane Smith", course: "Graphic Designing" },
-    { id: "000004", name: "Alice Johnson", course: "App Development" },
-    { id: "000005", name: "Bob Martin", course: "Cybersecurity" },
-    { id: "000006", name: "Carol Lee", course: "Data Science" },
-  ];
-
+  const [students, setStudents] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 5;
+
+  // Fetch students data from the backend
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:5005/api/students/all"); // Replace with your backend API endpoint
+        const data = await response.json();
+        // Set initial status for each student as null (not marked yet)
+        const studentsWithStatus = data.map(student => ({
+          ...student,
+          status: null, // null means no status selected
+        }));
+        setStudents(studentsWithStatus);
+      } catch (error) {
+        console.error("Error fetching student data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // Pagination Logic
   const indexOfLastRow = currentPage * rowsPerPage;
@@ -23,11 +35,27 @@ const Attendance = () => {
     setCurrentPage(page);
   };
 
+  // Handle Present/Absent button click
+  const handleStatusChange = (id, status) => {
+    setStudents((prevStudents) =>
+      prevStudents.map((student) =>
+        student.registerNumber === id
+          ? { ...student, status }
+          : student
+      )
+    );
+  };
+
   // Download CSV File
   const handleDownload = () => {
     const csvContent = [
-      ["Student ID", "Student Name", "Course"].join(","), // Header row
-      ...students.map((student) => [student.id, student.name, student.course].join(",")), // Data rows
+      ["Student ID", "Student Name", "Course", "Status"].join(","), // Header row
+      ...students.map((student) => [
+        student.registerNumber,
+        student.fullName,
+        student.course,
+        student.status || "Not Marked", // Show status or default to "Not Marked"
+      ].join(",")), // Data rows
     ].join("\n");
 
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
@@ -44,7 +72,7 @@ const Attendance = () => {
   };
 
   return (
-    <div className="p-6 min-h-screen w-full font-sans ">
+    <div className="p-6 min-h-screen w-full font-sans">
       <h1 className="text-2xl md:text-3xl font-semibold mb-6 text-gray-800">Attendance</h1>
 
       <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
@@ -78,21 +106,31 @@ const Attendance = () => {
             </tr>
           </thead>
           <tbody>
-            {currentRows.map((student, index) => (
+            {currentRows.map((student) => (
               <tr
-                key={index}
-                className="bg-[#50E3C2]  text-gray-800 transition-all duration-300 hover:bg-teal-400"
+                key={student.registerNumber}
+                className="bg-[#50E3C2] text-gray-800 transition-all duration-300 hover:bg-teal-400"
               >
-                <td className="px-4 py-3 border-b-8 border-white rounded-l-xl text-sm md:text-base">{student.id}</td>
-                <td className="px-4 py-2  border-b-8 border-white text-sm md:text-base">{student.name}</td>
+                <td className="px-4 py-3 border-b-8 border-white rounded-l-xl text-sm md:text-base">{student.registerNumber}</td>
+                <td className="px-4 py-2 border-b-8 border-white text-sm md:text-base">{student.fullName}</td>
                 <td className="px-4 py-2 border-b-8 border-white text-sm md:text-base">{student.course}</td>
-                <td className="px-4 py-2 border-b-8  border-white rounded-r-xl  text-center">
-                  <button className="bg-green-500 text-white px-3 mb-1 py-1 text-xs md:text-sm rounded-md shadow-md hover:bg-green-600">
-                    Present
-                  </button>
-                  <button className="bg-red-500 text-white px-3 py-1 text-xs md:text-sm rounded-md shadow-md hover:bg-red-600 md:ml-2">
-                    Absent
-                  </button>
+                <td className="px-4 py-2 border-b-8 border-white rounded-r-xl text-center">
+                  {student.status !== "Present" && (
+                    <button
+                      onClick={() => handleStatusChange(student.registerNumber, "Present")}
+                      className="bg-green-500 text-white px-3 mb-1 py-1 text-xs md:text-sm rounded-md shadow-md hover:bg-green-600"
+                    >
+                      Present
+                    </button>
+                  )}
+                  {student.status !== "Absent" && (
+                    <button
+                      onClick={() => handleStatusChange(student.registerNumber, "Absent")}
+                      className="bg-red-500 text-white px-3 py-1 text-xs md:text-sm rounded-md shadow-md hover:bg-red-600 md:ml-2"
+                    >
+                      Absent
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
