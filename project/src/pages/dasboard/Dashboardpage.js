@@ -41,7 +41,7 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className="p-2 bg-[#fff] min-h-screen px-16">
+    <div className="p-2 bg-[#fff] min-h-screen md:px-20">
       {/* Overview Section */}
       <h1 className="text-2xl font-semibold mb-4">Overview</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 ">

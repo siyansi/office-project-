@@ -41,7 +41,7 @@ const Attendance = () => {
     try {
       let url = "http://localhost:5005/api/students/all";
       if (date) {
-        url = "http://localhost:5005/api/students/attendance?date=${date}";
+        url = `http://localhost:5005/api/students/attendance?date=${date}`;
       }
       const response = await fetch(url);
       const data = await response.json();
@@ -215,43 +215,10 @@ const Attendance = () => {
     URL.revokeObjectURL(url);
   };
   
-  // Close Attendance and save all attendance details to the database
-  const handleCloseAttendance = async () => {
-    if (!selectedDate) {
-      alert("Please select a date first.");
-      return;
-    }
-
-    try {
-      const response = await fetch(
-        "http://localhost:5005/api/students/attendance/close",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            date: selectedDate,
-            attendance: students.map((student) => ({
-              registerNumber: student.registerNumber,
-              status: student.status || "Absent", // Default to "Absent" if status is not set
-            })),
-          }),
-        }
-      );
-
-      if (response.ok) {
-        alert("Attendance closed successfully!");
-      } else {
-        console.error("Failed to close attendance.");
-      }
-    } catch (error) {
-      console.error("Error closing attendance:", error);
-    }
-  };
+  
 
   return (
-    <div className="p-6 min-h-screen w-full font-sans">
+    <div className="p-6 min-h-screen w-full font-sans md:px-20">
       <h1 className="text-2xl md:text-3xl font-semibold mb-6 text-gray-800">
         Attendance
       </h1>
@@ -286,6 +253,7 @@ const Attendance = () => {
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
           <thead className="bg-[#F5A623]">
+
             <tr>
               <th className="px-4 py-2 text-left border-b-8 border-white text-sm md:text-base text-white">
                 Student ID

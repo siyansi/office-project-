@@ -78,11 +78,11 @@ const StudentProfile = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen relative">
+    <div className="p-6 bg-gray-50 min-h-screen relative md:px-20">
       {/* X Icon */}
       <button
         className="absolute top-0 right-3 text-gray-800 hover:text-red-500 text-4xl"
-        onClick={() => navigate('/dashboard')}
+        onClick={() => navigate('/students')}
         title="Close"
       >
         &times;

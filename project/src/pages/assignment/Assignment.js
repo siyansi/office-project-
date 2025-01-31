@@ -89,7 +89,7 @@ const Assignment = () => {
   const totalPages = Math.ceil(assignments.length / rowsPerPage);
 
   return (
-    <div className="p-6 min-h-screen">
+    <div className="p-6 min-h-screen px-20">
       <h1 className="text-2xl font-semibold mb-4">Assignments</h1>
 
       <div className="flex justify-between items-center mb-4">
@@ -107,15 +107,18 @@ const Assignment = () => {
       <div className="overflow-x-auto w-[100%]">
         <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
           <thead className="bg-[#F5A623]">
+         
             <tr className="text-sm md:text-base">
               <th className="px-4 py-2 border-b-8 border-white text-white">Name of Assignment</th>
               <th className="px-4 py-2 border-b-8 border-white text-white">Deadline</th>
               <th className="px-4 py-2 border-b-8 border-white text-white">Topic</th>
               <th className="px-4 py-2 border-b-8 border-white text-white">Action</th>
             </tr>
+
           </thead>
+       
           <tbody>
-            {currentRows.map((assignment) => (
+          {currentRows.map((assignment) => (
               <tr key={assignment._id} className="bg-[#50E3C2] text-gray-800 hover:bg-teal-400">
                 <td className="px-4 py-2 border-b-8 rounded-l-xl border-white text-center">{assignment.name}</td>
                 <td className="px-4 py-2 border-b-8 border-white text-center">{assignment.deadline}</td>
@@ -156,6 +159,35 @@ const Assignment = () => {
        
         </div>
         </table>
+        <div className="flex justify-center items-center space-x-2 mt-4">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              &lt;
+            </button>
+            {[...Array(totalPages).keys()].map((page) => (
+              <button
+                key={page + 1}
+                onClick={() => handlePageChange(page + 1)}
+                className={`px-4 py-2 rounded-lg shadow-md ${
+                  currentPage === page + 1
+                    ? "bg-orange-500 text-white"
+                    : "bg-gray-200 hover:bg-gray-300"
+                }`}
+              >
+                {page + 1}
+              </button>
+            ))}
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              &gt;
+            </button>
+          </div>
       </div>
 
       {isCreateModalOpen && (

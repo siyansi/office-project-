@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./componenet/navbar/Navbar";
 import Sidebar from "./componenet/Sidebar/Sidebar";
-import Maincontent from "./componenet/maincontent/Maincontent";
+// import Maincontent from "./componenet/maincontent/Maincontent";
 import Dashboardpage from "./pages/dasboard/Dashboardpage";
 import Student from "./pages/student/Student";
 import Attendance from "./pages/attened/Attendance";

@@ -41,7 +41,7 @@ const ScoreCard = () => {
   };
 
   return (
-    <div className="p-6  min-h-screen">
+    <div className="p-6  min-h-screen md:px-20">
       <h1 className="text-2xl font-semibold mb-4">Score Card</h1>
 
       <div className="flex justify-between items-center mb-4">
