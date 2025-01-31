@@ -179,6 +179,7 @@ const Signup = () => {
           </div>
         </div>
       </div>
+      <p className="text-transparent"> {userRole}</p>
     </div>
   );
 };
