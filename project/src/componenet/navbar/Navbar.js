@@ -1,7 +1,7 @@
 import React from "react";
-import { RiVideoAddLine } from "react-icons/ri";
-import { IoMdNotificationsOutline } from "react-icons/io";
-import { FaBars } from "react-icons/fa"; // For the mobile menu toggle
+// import { RiVideoAddLine } from "react-icons/ri";
+// import { IoMdNotificationsOutline } from "react-icons/io";
+// import { FaBars } from "react-icons/fa"; // For the mobile menu toggle
 import mad from "../../assests/55311.jpg";
 
 const Navbar = () => {
