@@ -16,7 +16,7 @@ const Account = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 md:px-20">
       {/* Heading */}
       <h1 className="text-3xl font-semibold mb-4">Staff Details</h1>
 

@@ -25,7 +25,7 @@ const Sidebar = ({ onMenuClick }) => {
     students: "/students",
     attendance: "/attendance",
     assignments: "/assignments",
-    "store card": "/store-card",
+    "score card": "/score-card",
     "class recordings": "/class-recordings",
     account: "/account",
   };
@@ -35,7 +35,7 @@ const Sidebar = ({ onMenuClick }) => {
     { name: "Students", icon: <PiStudentFill /> },
     { name: "Attendance", icon: <GiNotebook /> },
     { name: "Assignments", icon: <MdAssignmentAdd /> },
-    { name: "Store Card", icon: <GrScorecard /> },
+    { name: "Score Card", icon: <GrScorecard /> },
     { name: "Class Recordings", icon: <MdOutlineLaptopChromebook /> },
     { name: "Account", icon: <MdAccountCircle /> },
   ];

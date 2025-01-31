@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom"; // <-- Import navigate
 import axios from "axios"; // <-- Import axios
 import {
-  fetchStudents,
   addStudent,
   deleteStudent,
 } from "../../features/Studentslice";
@@ -15,7 +14,7 @@ const Student = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate(); // <-- Define the navigate function
   const [studentsData, setStudentsData] = useState([]);
-  const students = useSelector((state) => state.students.studentList);
+  // const students = useSelector((state) => state.students.studentList);
   const [currentPage, setCurrentPage] = useState(1);
   const [actionRow, setActionRow] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -51,14 +50,15 @@ const Student = () => {
         if (res.status === 200) {
           setIsLoading(false);
           setStudentsData(res.data);
-          dispatch(setStudents(res.data));
+          dispatch(setStudents(res.data)); // dispatch is now inside the dependency array
         }
       } catch (error) {
         console.log("Fetch students error:", error);
       }
     };
     fetchStudents();
-  }, []);
+  }, [dispatch]); // Add dispatch as a dependency
+  
 
   const handleDelete = (id) => {
     dispatch(deleteStudent(id));
@@ -106,7 +106,7 @@ const Student = () => {
   };
 
   return (
-    <div style={{ fontFamily: "Poppins" }} className="p-6 min-h-screen w-full">
+    <div style={{ fontFamily: "Poppins" }} className="p-6 md:px-20 min-h-screen w-full">
       {isLoading ? (
         <div className="h-[70vh] flex items-center justify-center">
           <svg className="loader" viewBox="25 25 50 50">
@@ -144,56 +144,54 @@ const Student = () => {
                 </tr>
               </thead>
               <tbody>
-                {studentsData?.map((student) => (
-                  <tr
-                    key={student._id}
-                    className="bg-[#50E3C2] text-gray-800 hover:bg-teal-400"
-                  >
-                    <td className="px-4 py-2 border-b-8 rounded-l-xl border-white text-center">
-                      {student.registerNumber}
-                    </td>
-                    <td className="px-4 py-2  border-b-8 border-white text-center">
-                      {student.fullName}
-                    </td>
-                    <td className="px-4 py-2 border-b-8 border-white text-center">
-                      {student.course}
-                    </td>
-                    <td className="px-4 py-2 border-b-8 pb-3   rounded-r-xl border-white text-center relative">
-                      <button
-                        onClick={() =>
-                          setActionRow(
-                            actionRow === student._id ? null : student._id
-                          )
-                        }
-                        className="p-1 rounded-full hover:bg-gray-400 focus:outline-none"
-                      >
-                        <span className="text-lg">⋮</span>
-                      </button>
-                      {actionRow === student._id && (
-                        <>
-                          <div className="flex">
-                            <div>
-                              <button
-                                onClick={() => handleDelete(student._id)}
-                                className="absolute top-12 left-1/2 text-[65%] w-[40%] mt-1 transform -translate-x-1/2 px-3 py- bg-red-500 text-white rounded-md shadow-md hover:bg-red-600"
-                              >
-                                Delete
-                              </button>
-                            </div>
+  {currentRows?.map((student) => (
+    <tr
+      key={student._id}
+      className="bg-[#50E3C2] text-gray-800 hover:bg-teal-400"
+    >
+      <td className="px-4 py-2 border-b-8 rounded-l-xl border-white text-center">
+        {student.registerNumber}
+      </td>
+      <td className="px-4 py-2  border-b-8 border-white text-center">
+        {student.fullName}
+      </td>
+      <td className="px-4 py-2 border-b-8 border-white text-center">
+        {student.course}
+      </td>
+      <td className="px-4 py-2 border-b-8 pb-3 rounded-r-xl border-white text-center relative">
+        <button
+          onClick={() =>
+            setActionRow(actionRow === student._id ? null : student._id)
+          }
+          className="p-1 rounded-full hover:bg-gray-400 focus:outline-none"
+        >
+          <span className="text-lg">⋮</span>
+        </button>
+        {actionRow === student._id && (
+          <>
+            <div className="flex">
+              <div>
+                <button
+                  onClick={() => handleDelete(student._id)}
+                  className="absolute top-12 left-1/2 text-[65%] w-[40%] mt-1 transform -translate-x-1/2 px-3 py- bg-red-500 text-white rounded-md shadow-md hover:bg-red-600"
+                >
+                  Delete
+                </button>
+              </div>
 
-                            <button
-                              onClick={() => handleView(student._id)} // <-- View button click
-                              className="absolute top-8 left-1/2 text-[70%] w-[40%] transform -translate-x-1/2 px-3 py- bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600"
-                            >
-                              View
-                            </button>
-                          </div>
-                        </>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
+              <button
+                onClick={() => handleView(student._id)} // <-- View button click
+                className="absolute top-8 left-1/2 text-[70%] w-[40%] transform -translate-x-1/2 px-3 py- bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600"
+              >
+                View
+              </button>
+            </div>
+          </>
+        )}
+      </td>
+    </tr>
+  ))}
+</tbody>
             </table>
           </div>
 
