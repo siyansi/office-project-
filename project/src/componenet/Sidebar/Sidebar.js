@@ -11,13 +11,24 @@ import { GrScorecard } from "react-icons/gr";
 import { HiOutlineLogout } from "react-icons/hi";
 import { FaBars } from "react-icons/fa";
 import appLogo from "../../assests/Ellipse 1.svg";
-import { useNavigate } from "react-router-dom"; // Use navigate from React Router
+import { useLocation, useNavigate } from "react-router-dom"; // Import hooks
 
 const Sidebar = ({ onMenuClick }) => {
+  const location = useLocation(); // Get current route
+  const navigate = useNavigate(); // Initialize navigation
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedPage, setSelectedPage] = useState("Dashboard");
-  const [showLogoutModal, setShowLogoutModal] = useState(false); // State for modal visibility
-  const navigate = useNavigate(); // Initialize navigate
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+
+  // Define route mappings
+  const pageRoutes = {
+    dashboard: "/dashboard",
+    students: "/students",
+    attendance: "/attendance",
+    assignments: "/assignments",
+    "store card": "/store-card",
+    "class recordings": "/class-recordings",
+    account: "/account",
+  };
 
   const menuItems = [
     { name: "Dashboard", icon: <MdSpaceDashboard /> },
@@ -35,25 +46,25 @@ const Sidebar = ({ onMenuClick }) => {
   };
 
   const handleMenuClick = (page) => {
-    setSelectedPage(page);
     onMenuClick(page);
+
+    const route = pageRoutes[page.toLowerCase()]; // Normalize keys to lowercase
+    if (route) navigate(route);
+
     if (window.innerWidth <= 768) toggleSidebar();
   };
 
-  // Handle Logout button click
   const handleLogoutClick = () => {
-    setShowLogoutModal(true); // Show the confirmation modal
+    setShowLogoutModal(true);
   };
 
-  // Handle Yes button click in the modal (navigate to signup page)
   const handleLogoutYes = () => {
-    setShowLogoutModal(false); // Close the modal
-    navigate("/"); // Redirect to signup page using navigate
+    setShowLogoutModal(false);
+    navigate("/"); // Redirect to login page
   };
 
-  // Handle No button click in the modal (close the modal)
   const handleLogoutNo = () => {
-    setShowLogoutModal(false); // Close the modal
+    setShowLogoutModal(false);
   };
 
   return (
@@ -72,26 +83,32 @@ const Sidebar = ({ onMenuClick }) => {
           </header>
         </div>
         <hr />
+
         {/* Menu Items */}
         <ul className="mt-4 overflow-y-auto">
-          {menuItems.map((item) => (
-            <li
-              key={item.name}
-              className={`mb-2 flex items-center cursor-pointer p-2 font-semibold rounded-[3px] transition-all ${
-                selectedPage === item.name
-                  ? "bg-[#50E3C2] text-[#000] border-l-8 border-l-[#4A90E2]"
-                  : "hover:bg-[#dddddd8f]"
-              }`}
-              onClick={() => handleMenuClick(item.name)}
-            >
-              <span className="mr-3 text-2xl">{item.icon}</span>
-              {item.name}
-            </li>
-          ))}
+          {menuItems.map((item) => {
+            const isActive = location.pathname === pageRoutes[item.name.toLowerCase()];
+            return (
+              <li
+                key={item.name}
+                className={`mb-2 flex items-center cursor-pointer p-2 font-semibold rounded-[3px] transition-all ${
+                  isActive
+                    ? "bg-[#50E3C2] text-[#000] border-l-8 border-l-[#4A90E2]"
+                    : "hover:bg-[#dddddd8f]"
+                }`}
+                onClick={() => handleMenuClick(item.name)}
+              >
+                <span className="mr-3 text-2xl">{item.icon}</span>
+                {item.name}
+              </li>
+            );
+          })}
         </ul>
+
+        {/* Logout Button */}
         <button
           className="mb-2 ml-1 flex items-center cursor-pointer w-full hover:bg-[#dddddd8f] text-[#000] p-2 font-semibold rounded-[3px] transition-all"
-          onClick={handleLogoutClick} // Open the logout confirmation modal
+          onClick={handleLogoutClick}
         >
           <HiOutlineLogout className="mr-3 text-2xl" />
           Logout
@@ -121,8 +138,10 @@ const Sidebar = ({ onMenuClick }) => {
       {showLogoutModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded-lg shadow-lg w-80">
-            <h2 className="text-xl font-semibold text-center mb-4">Are you sure you want to logout?</h2>
-            <div className="flex justify-around  ">
+            <h2 className="text-xl font-semibold text-center mb-4">
+              Are you sure you want to logout?
+            </h2>
+            <div className="flex justify-around">
               <button
                 onClick={handleLogoutYes}
                 className="bg-blue-500 text-white px-4 py-1 rounded-md hover:bg-blue-600"

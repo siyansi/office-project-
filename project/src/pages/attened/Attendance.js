@@ -3,26 +3,31 @@ import React, { useState, useEffect } from "react";
 const Attendance = () => {
   const [students, setStudents] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedDate, setSelectedDate] = useState(""); // For date filter
   const rowsPerPage = 5;
 
-  // Fetch students data from the backend
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("http://localhost:5005/api/students/all"); // Replace with your backend API endpoint
-        const data = await response.json();
-        // Set initial status for each student as null (not marked yet)
-        const studentsWithStatus = data.map(student => ({
-          ...student,
-          status: null, // null means no status selected
-        }));
-        setStudents(studentsWithStatus);
-      } catch (error) {
-        console.error("Error fetching student data:", error);
+  // Fetch all students or filter by date
+  const fetchStudents = async (date = "") => {
+    try {
+      let url = "http://localhost:5005/api/students/all";
+      if (date) {
+        url = `http://localhost:5005/api/students/attendance?date=${date}`;
       }
-    };
+      const response = await fetch(url);
+      const data = await response.json();
+      setStudents(
+        data.map((student) => ({
+          ...student,
+          status: student.attendance?.find((att) => att.date === date)?.status || null,
+        }))
+      );
+    } catch (error) {
+      console.error("Error fetching student data:", error);
+    }
+  };
 
-    fetchData();
+  useEffect(() => {
+    fetchStudents();
   }, []);
 
   // Pagination Logic
@@ -35,40 +40,95 @@ const Attendance = () => {
     setCurrentPage(page);
   };
 
-  // Handle Present/Absent button click
-  const handleStatusChange = (id, status) => {
-    setStudents((prevStudents) =>
-      prevStudents.map((student) =>
-        student.registerNumber === id
-          ? { ...student, status }
-          : student
-      )
-    );
+  // Mark attendance and update backend
+  const handleStatusChange = async (id, status) => {
+    if (!selectedDate) {
+      alert("Please select a date first.");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:5005/api/students/attendance/mark", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          registerNumber: id,
+          date: selectedDate,
+          status,
+        }),
+      });
+
+      if (response.ok) {
+        setStudents((prevStudents) =>
+          prevStudents.map((student) =>
+            student.registerNumber === id ? { ...student, status } : student
+          )
+        );
+      } else {
+        console.error("Failed to update attendance.");
+      }
+    } catch (error) {
+      console.error("Error marking attendance:", error);
+    }
+  };
+
+  // Filter attendance by selected date
+  const handleDateChange = (e) => {
+    const date = e.target.value;
+    setSelectedDate(date);
+    fetchStudents(date);
   };
 
   // Download CSV File
   const handleDownload = () => {
     const csvContent = [
-      ["Student ID", "Student Name", "Course", "Status"].join(","), // Header row
-      ...students.map((student) => [
-        student.registerNumber,
-        student.fullName,
-        student.course,
-        student.status || "Not Marked", // Show status or default to "Not Marked"
-      ].join(",")), // Data rows
+      ["Student ID", "Student Name", "Course", "Status"].join(","),
+      ...students.map((student) =>
+        [student.registerNumber, student.fullName, student.course, student.status || "Not Marked"].join(",")
+      ),
     ].join("\n");
 
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
-
-    // Create a temporary <a> element
     const link = document.createElement("a");
     link.href = url;
     link.download = "attendance.csv";
     link.click();
-
-    // Clean up
     URL.revokeObjectURL(url);
+  };
+
+  // Close Attendance and save all attendance details to the database
+  const handleCloseAttendance = async () => {
+    if (!selectedDate) {
+      alert("Please select a date first.");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:5005/api/students/attendance/close", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          date: selectedDate,
+          attendance: students.map((student) => ({
+            registerNumber: student.registerNumber,
+            status: student.status || "Absent", // Default to "Absent" if status is not set
+          })),
+        }),
+      });
+
+      if (response.ok) {
+        alert("Attendance closed successfully!");
+      } else {
+        console.error("Failed to close attendance.");
+      }
+    } catch (error) {
+      console.error("Error closing attendance:", error);
+    }
   };
 
   return (
@@ -83,16 +143,26 @@ const Attendance = () => {
           <input
             type="date"
             id="date"
+            value={selectedDate}
+            onChange={handleDateChange}
             className="appearance-none px-3 py-2 border rounded-md focus:ring-2 focus:ring-orange-500 focus:outline-none"
           />
         </div>
 
-        <button
-          onClick={handleDownload}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600 transition-all"
-        >
-          Download CSV
-        </button>
+        <div className="flex gap-4">
+          <button
+            onClick={handleDownload}
+            className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600 transition-all"
+          >
+            Download CSV
+          </button>
+          <button
+            onClick={handleCloseAttendance}
+            className="bg-green-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-green-600 transition-all"
+          >
+            Close Attendance
+          </button>
+        </div>
       </div>
 
       <div className="overflow-x-auto">
@@ -107,10 +177,7 @@ const Attendance = () => {
           </thead>
           <tbody>
             {currentRows.map((student) => (
-              <tr
-                key={student.registerNumber}
-                className="bg-[#50E3C2] text-gray-800 transition-all duration-300 hover:bg-teal-400"
-              >
+              <tr key={student.registerNumber} className="bg-[#50E3C2] text-gray-800 transition-all duration-300 hover:bg-teal-400">
                 <td className="px-4 py-3 border-b-8 border-white rounded-l-xl text-sm md:text-base">{student.registerNumber}</td>
                 <td className="px-4 py-2 border-b-8 border-white text-sm md:text-base">{student.fullName}</td>
                 <td className="px-4 py-2 border-b-8 border-white text-sm md:text-base">{student.course}</td>
@@ -152,9 +219,7 @@ const Attendance = () => {
             key={page + 1}
             onClick={() => handlePageChange(page + 1)}
             className={`px-3 py-2 rounded-md shadow-md ${
-              currentPage === page + 1
-                ? "bg-orange-500 text-white"
-                : "bg-gray-200 hover:bg-gray-300"
+              currentPage === page + 1 ? "bg-orange-500 text-white" : "bg-gray-200 hover:bg-gray-300"
             }`}
           >
             {page + 1}
