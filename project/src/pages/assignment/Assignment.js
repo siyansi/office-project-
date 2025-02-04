@@ -26,15 +26,35 @@ const Assignment = () => {
 
   const fetchAssignments = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5005/api/assignments/see"
-      );
+      const response = await axios.get("http://localhost:5005/api/assignments/see");
       setAssignments(response.data);
     } catch (error) {
       console.error("Error fetching assignments:", error);
+      console.log("Attachment:", newAssignment.attachment);
+
     }
   };
-
+  
+  // Display assignment with attachment
+  const renderAttachment = (attachment) => {
+    if (!attachment) return null;
+    if (!attachment.mimetype || !attachment.data) return <p>Invalid attachment</p>;
+  
+    const { data, mimetype, filename } = attachment;
+    const base64Data = `data:${mimetype};base64,${data}`;
+  
+    if (mimetype.startsWith("image")) {
+      return <img src={base64Data} alt={filename} className="max-w-full h-auto" />;
+    } else if (mimetype.startsWith("video")) {
+      return <video controls src={base64Data} className="w-full" />;
+    } else if (mimetype.startsWith("application/pdf")) {
+      return <embed src={base64Data} type="application/pdf" width="600" height="400" />;
+    } else {
+      return <a href={base64Data} download={filename}>Download {filename}</a>;
+    }
+    
+  };
+  
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
@@ -71,10 +91,12 @@ const Assignment = () => {
       formData.append("deadline", newAssignment.deadline); // Ensure deadline is in the right format
       formData.append("topic", newAssignment.topic);
       formData.append("assignee", selectedStudent);
+  
+      // If there's an attachment, append it to the form data
       if (newAssignment.attachment) {
         formData.append("attachment", newAssignment.attachment);
       }
-
+  
       try {
         const res = await axios.post(
           "http://localhost:5005/api/assignments/add",
@@ -91,16 +113,19 @@ const Assignment = () => {
             deadline: "",
             topic: "",
             assignee: selectedStudent,
-            attachment: null,
+            attachment: "", // Reset the attachment after submitting
           });
         }
       } catch (error) {
         console.error("Error adding assignment:", error);
+        console.log("Attachment:", newAssignment.attachment);
+
       }
     } else {
       alert("Please fill all fields before publishing.");
     }
   };
+  
   console.log("assignments", assignments);
 
   const indexOfLastRow = currentPage * rowsPerPage;
@@ -113,6 +138,7 @@ const Assignment = () => {
       <h1 className="text-2xl font-semibold mb-4">Assignments</h1>
 
       <div className="flex justify-between items-center mb-4">
+        <div></div>
         <button
           onClick={() => {
             setIsCreateModalOpen(true);
@@ -182,14 +208,14 @@ const Assignment = () => {
                         <div>
                           <button
                             onClick={() => handleDelete(assignment._id)}
-                            className="absolute top-12 left-1/2 text-[65%] w-[40%] mt-1 transform -translate-x-1/2 px-3 py-2 bg-red-500 text-white rounded-md shadow-md hover:bg-red-600"
+                            className="absolute top-12 left-1/4 text-[65%] w-[40%] mt-1 transform -translate-x-1/2 px- py- bg-red-500 text-white rounded-md shadow-md hover:bg-red-600"
                           >
                             Delete
                           </button>
                         </div>
                         <button
                           onClick={() => handleView(assignment._id)}
-                          className="absolute top-8 left-1/2 text-[70%] w-[40%] transform -translate-x-1/2 px-3 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600"
+                          className="absolute top-8 left-1/4 text-[70%] w-[40%] transform -translate-x-1/2 px- py- bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600"
                         >
                           View
                         </button>
@@ -318,27 +344,89 @@ const Assignment = () => {
               </button>
             </div>
           </div>
-          {isViewModalOpen && (
+          
+          
+        </div>
+      )}
+
+
+{isViewModalOpen && (
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
               <div className="bg-white p-4 m-4 md:p-8 rounded-lg shadow-lg w-full md:w-[60%] overflow-y-auto">
                 <h2 className="mb-5">Assignment Details</h2>
-                <div>
-                  <p>
-                    <strong>Name:</strong> {selectedAssignment.name}
-                  </p>
-                  <p>
-                    <strong>Deadline:</strong> {selectedAssignment.deadline}
-                  </p>
-                  <p>
-                    <strong>Topic:</strong> {selectedAssignment.topic}
-                  </p>
-                  {selectedAssignment.attachment && (
-                    <p>
-                      <strong>Attachment:</strong>{" "}
-                      {selectedAssignment.attachment}
-                    </p>
-                  )}
-                </div>
+                <div className="grid gap-4 ">
+
+                <div className="flex items-center gap-3 bg-[#50E3C2] rounded-[7px] border border-[#50E3C2]  ">
+  <label className="block text-sm font-semibold m-3 w-[30%]">
+    Name:
+  </label>
+  <input
+    type="text"
+    value={selectedAssignment.name}
+    readOnly
+    className="w-[70%] px-4 py-2 outline-none bg-transparent border-l-2 border-l-black p-2 focus:outline-none text-black"
+  />
+</div>
+
+<div className="flex items-center gap-3  bg-[#F0F0F0]  rounded-[7px] border border-[#50E3C2]">
+  <label className="block text-sm font-semibold m-3 w-[30%]">
+    Deadline:
+  </label>
+  <input
+    type="text"
+    value={selectedAssignment.deadline}
+    readOnly
+    className="w-[70%] px-4 py-2 outline-none bg-transparent border-l-2 border-l-black p-2 focus:outline-none text-black"
+  />
+</div>
+
+<div className="flex items-center gap-3 bg-[#50E3C2] rounded-[7px] border border-[#50E3C2]">
+  <label className="block text-sm font-semibold m-3 w-[30%]">
+    Topic:
+  </label>
+  <input
+    type="text"
+    value={selectedAssignment.topic}
+    readOnly
+    className="w-[70%] px-4 py-2 outline-none bg-transparent border-l-2 border-l-black focus:outline-none text-black"
+  />
+</div>
+
+<div className="flex items-center gap-3 bg-[#F0F0F0] rounded-[7px] border border-[#50E3C2]">
+  <label className="block text-sm font-semibold m-3 w-[30%]">
+    Attachment:
+  </label>
+  <input
+    type="file"
+    onChange={(e) => {
+      const file = e.target.files[0];
+      setNewAssignment((prev) => ({
+        ...prev,
+        attachment: file,
+      }));
+    }}
+    className="w-[70%] px-4 py-2 outline-none bg-transparent border-l-2 border-l-black focus:outline-none text-black"
+  />
+</div>
+
+<div className="mt-4">
+  {newAssignment.attachment && (
+    <div className="border p-3 rounded-md">
+      <h3 className="text-sm font-semibold">Attachment Preview:</h3>
+      {renderAttachment(newAssignment.attachment)}
+    </div>
+  )}
+</div>
+{/* <div>
+{assignments.map((assignment) => (
+      <div className="f" key={assignment._id}>
+       
+       <p> {renderAttachment(assignment.attachment)}</p> 
+      </div>
+    ))}
+  </div> */}
+
+</div>
                 <div className="flex justify-end mt-6 space-x-4">
                   <button
                     onClick={() => setIsViewModalOpen(false)}
@@ -350,8 +438,6 @@ const Assignment = () => {
               </div>
             </div>
           )}
-        </div>
-      )}
     </div>
   );
 };
