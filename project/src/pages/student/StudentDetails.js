@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Doughnut } from 'react-chartjs-2';
 import mad from "../../assests/55311.jpg";
 
@@ -147,7 +147,8 @@ const StudentProfile = () => {
           <div className="p-4 bg-pink-100 shadow-md rounded-lg text-center">
             <h3 className="text-lg font-semibold">Attendance</h3>
             <Doughnut data={attendanceData} />
-            <button className="mt-4 bg-pink-500 text-white py-1 px-4 rounded-lg">View Details</button>
+            <Link to={"/attendance"} >
+            <button className="mt-4 bg-pink-500 text-white py-1 px-4 rounded-lg">View Details</button></Link>
           </div>
           <div className="p-4 bg-blue-100 shadow-md rounded-lg text-center">
             <h3 className="text-lg font-semibold">Exams</h3>
@@ -157,7 +158,9 @@ const StudentProfile = () => {
           <div className="p-4 bg-purple-100 shadow-md rounded-lg text-center">
             <h3 className="text-lg font-semibold">Assignments</h3>
             <Doughnut data={assignmentsData} />
+            <Link to={"/assignments"} >
             <button className="mt-4 bg-purple-500 text-white py-1 px-4 rounded-lg">View Details</button>
+            </Link>
           </div>
         </div>
       </div>

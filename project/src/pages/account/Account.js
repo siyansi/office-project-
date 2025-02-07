@@ -102,65 +102,77 @@
 
 // export default Account;
 
-
-
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import img from "../../assests/55311.jpg";
 
 const Account = () => {
-  const [staffDetails, setStaffDetails] = useState(null);
-  const staffId = "679b2a544386d04f97a36509"; // Replace with dynamic ID if needed
+  const [userDetails, setUserDetails] = useState(null);
+  const userId = localStorage.getItem("studentId"); // User ID from localStorage
+  const userRole = localStorage.getItem("role"); // Role from localStorage
 
   useEffect(() => {
-    const fetchStaffDetails = async () => {
+    const fetchUserDetails = async () => {
+      if (!userId || !userRole) return;
+
       try {
-        const response = await axios.get(`http://localhost:5005/api/students/${staffId}`);
-        setStaffDetails(response.data);
+        // ✅ Check role and fetch from the correct API
+        const endpoint =
+          userRole === "Admin"
+            ? `http://localhost:5005/api/admins/${userId}`
+            : `http://localhost:5005/api/students/${userId}`;
+
+        const response = await axios.get(endpoint);
+        setUserDetails(response.data);
       } catch (error) {
-        console.error("Error fetching staff details:", error);
+        console.error("Error fetching user details:", error);
       }
     };
-    fetchStaffDetails();
-  }, [staffId]);
 
-  if (!staffDetails) {
+    fetchUserDetails();
+  }, [userId, userRole]);
+
+  if (!userDetails) {
     return <div className="p-6 md:px-20">Loading...</div>;
   }
 
   return (
     <div className="p-6 md:px-20">
-      <h1 className="text-3xl font-semibold mb-4">Staff Details</h1>
+      <h1 className="text-3xl font-semibold mb-4">Account Details</h1>
       <div className="flex mb-6">
-        <div className="w-32 h-32 border-4  border-blue-400 rounded-full overflow-hidden">
+        <div className="w-32 h-32 border-4 border-blue-400 rounded-full overflow-hidden">
           <img src={img} alt="Profile" className="w-full h-full object-cover" />
         </div>
         <div className="ml-6 flex flex-col justify-center">
-          <h2 className="text-xl font-semibold">{staffDetails.fullName}</h2>
-          <p className="text-sm text-gray-600">Staff ID: {staffDetails.registerNumber}</p>
-          <p className="text-sm text-gray-600">Gender: {staffDetails.gender}</p>
+          <h2 className="text-xl font-semibold">{userDetails.fullName}</h2>
+          <p className="text-sm text-gray-600">ID: {userDetails.registerNumber || userDetails.adminId}</p>
+          <p className="text-sm text-gray-600">Role: {userRole}</p>
         </div>
       </div>
 
-      <div className="bg-white shadow-md rounded-lg md:p-4 pr-2 pl-2 ">
+      <div className="bg-white shadow-md rounded-lg md:p-4 pr-2 pl-2">
         <table className="w-full">
           <tbody>
             {Object.entries({
-              "Name": staffDetails.fullName,
-              "Staff ID": staffDetails.registerNumber,
-              "Gender": staffDetails.gender,
-              "Join Date": new Date(staffDetails.admissionDate).toLocaleDateString(),
-              "Course": staffDetails.course,
-              "State": staffDetails.state,
-              "District": staffDetails.district,
-              "Zip Code": staffDetails.zipCode,
-              "Address": staffDetails.address,
-              "Mobile No": staffDetails.mobileNumber,
-              "Email": staffDetails.email
+              Name: userDetails.fullName,
+              "Register ID": userDetails.registerNumber || userDetails.adminId,
+              Gender: userDetails.gender || "N/A",
+              "Join Date": userDetails.admissionDate
+                ? new Date(userDetails.admissionDate).toLocaleDateString()
+                : "N/A",
+              Course: userDetails.course || "N/A",
+              State: userDetails.state || "N/A",
+              District: userDetails.district || "N/A",
+              "Zip Code": userDetails.zipCode || "N/A",
+              Address: userDetails.address || "N/A",
+              "Mobile No": userDetails.mobileNumber || "N/A",
+              Email: userDetails.email,
             }).map(([key, value], index) => (
-              <tr key={key} className={index % 2 === 0 ? "bg-gray-200" : "bg-teal-300"}>
-                <td className="p-2 border-r border-b-4 border-white font-semibold">{key}</td>
-                <td className="p-2 border-b-4 border-white pl-10">{value}</td>
+              <tr key={key} className={index % 2 === 0 ? "bg-[#F0F0F0]" : "bg-[#50E3C2]"}>
+                <td className="p-2 border-r border-b-8 rounded-l-xl border-white font-semibold">
+                  {key}
+                </td>
+                <td className="p-2 border-b-8 rounded-r-xl border-white pl-10">{value}</td>
               </tr>
             ))}
           </tbody>

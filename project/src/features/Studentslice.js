@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// Async Thunks
 export const fetchStudents = createAsyncThunk("students/fetchStudents", async () => {
   const response = await axios.get("http://localhost:5005/api/students/all");
   return response.data;
@@ -13,8 +12,11 @@ export const addStudent = createAsyncThunk("students/addStudent", async (student
 });
 
 export const deleteStudent = createAsyncThunk("students/deleteStudent", async (id) => {
-  await axios.delete(`http://localhost:5005/api/students/${id}`);
-  return id;
+  const response = await axios.delete(`http://localhost:5005/api/students/${id}`);
+  if (response.status === 200) {
+    return id;
+  }
+  throw new Error("Failed to delete student");
 });
 
 const studentSlice = createSlice({

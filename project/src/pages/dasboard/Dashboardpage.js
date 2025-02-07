@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 const DashboardPage = () => {
   
   const students = useSelector((state) => state.students.students);
+  const presentCount = useSelector((state) => state.attendance.presentCount);
 
 
   // Doughnut Chart Data
@@ -60,7 +61,7 @@ const DashboardPage = () => {
         </div>
         <div className="p-4 flex justify-between pt-6 bg-teal-300 rounded-xl shadow-lg transition-transform duration-300 transform hover:scale-95 hover:shadow-2xl  cursor-pointer">
           <div>
-          <h2 className="text-2xl font-bold text-teal-600">250</h2>
+          <h2 className="text-2xl font-bold text-teal-600">{presentCount}</h2>
           <p className="text-blue-800">Present Today</p>
           </div>
         
