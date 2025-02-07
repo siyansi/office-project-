@@ -7,14 +7,15 @@ import Assignment from '../../pages/assignment/Assignment';
 import ScoreCard from '../../pages/scorecard/ScoreCard';
 import ClassRecording from '../../pages/clssrecording/ClassRecording';
 import Account from '../../pages/account/Account';
+import StudentDetails from '../../pages/student/studentpage/StudentDetails';
 
-const Maincontent = ({ selectedPage }) => {
+const StudentMaincontent = ({ selectedPage }) => {
   return (
     <div className='w-full' style={{ fontFamily: 'Poppins' }}>
       <div className="ml-1 p-1 md:px-16 px-2">
         {/* Conditional rendering for different pages */}
         
-        {selectedPage === "dashboard" && (
+        {selectedPage === "student-dashboard" && (
           <div className='w-full overflow-hidden'>
       
             <Dashboardpage />
@@ -24,7 +25,7 @@ const Maincontent = ({ selectedPage }) => {
         {selectedPage === "Students" && (
           <div className="w-full overflow-hidden">
             <h2 className="text-3xl font-bold mb-6"></h2>
-            <Student />
+            <StudentDetails />
           </div>
         )}
         
@@ -36,28 +37,28 @@ const Maincontent = ({ selectedPage }) => {
         )}
 
         {/* New Sections */}
-        {selectedPage === "Assignments" && (
+        {selectedPage === "stu-Assignments" && (
           <div className='w-full'>
             <h2 className="text-3xl font-bold mb-6"></h2>
            <Assignment/>
                    </div>
         )}
 
-        {selectedPage === "Store Card" && (
+        {selectedPage === "stu-Store Card" && (
           <div className='w-full'>
             <h2 className="text-3xl font-bold mb-6"></h2>
         <ScoreCard/>
           </div>
         )}
 
-        {selectedPage === "Class Recordings" && (
+        {selectedPage === "stu-Class Recordings" && (
           <div className='w-full'>
             <h2 className="text-3xl font-bold mb-6"></h2>
            <ClassRecording/>
           </div>
         )}
 
-        {selectedPage === "Account" && (
+        {selectedPage === "stu-Account" && (
           <div className='w-full'>
             <h2 className="text-3xl font-bold mb-6"></h2>
             <Account/>
@@ -83,4 +84,4 @@ const Maincontent = ({ selectedPage }) => {
   );
 };
 
-export default Maincontent;
+export default StudentMaincontent;

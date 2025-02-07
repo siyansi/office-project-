@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,  } from "react";
 import { useNavigate } from "react-router-dom";
 import imge1 from "../../assests/m.png";
 import imge2 from "../../assests/s.jpg";
@@ -6,46 +6,50 @@ import { IoIosEye } from "react-icons/io";
 import { IoIosEyeOff } from "react-icons/io";
 import Cookies from 'js-cookie';  // Make sure to install 'js-cookie'
 import { jwtDecode } from 'jwt-decode'; // For newer versions
-
 import "../../App.css";
 import axios from "axios";
+
+
+
 const Signup = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const [userRole,setUserRole] = useState("")
 
   const handleLogin = async () => {
-    // Add basic validation logic
     try {
       if (!username || !password) {
         setErrorMessage("Username and Password are required");
         return;
       }
-  
-      // Make the request and await response
+
       const res = await axios.post("http://localhost:5005/auth/user/login", {
-        email:username,  // Assuming you use 'username' instead of 'email' in the body
+        email: username,
         password,
       });
-  
-      console.log("Login response:", res);
-  
-      // Check the response status (200 OK) before navigating
+
       if (res.status === 200) {
-        // Store token in cookies (for 1 day)
-        Cookies.set("token", res.data.token, { expires: 1 });
-        const decodedToken = jwtDecode(res.data.token);
-        console.log("Decoded Token:", decodedToken);
-  
-        // Store the decoded role in the state
+        const token = res.data.token;
+        Cookies.set("token", token, { expires: 1 }); 
+
+        const decodedToken = jwtDecode(token);
         const userRole = decodedToken.role;
-        console.log(userRole)
-        setUserRole(userRole);
-        // Redirect to the dashboard
-        navigate("/dashboard");
+        const studentId = decodedToken.id;
+
+        // ✅ Store user details
+        localStorage.setItem("role", userRole);
+        localStorage.setItem("studentId", studentId);
+        localStorage.setItem("token", token); 
+
+        if (userRole === "Admin") {
+          navigate("/admin/dashboard");
+        } else if (userRole === "Student") {
+          navigate("/student/dashboard");
+        } else {
+          setErrorMessage("Unauthorized role access");
+        }
       } else {
         setErrorMessage("Invalid login response");
       }
@@ -54,6 +58,7 @@ const Signup = () => {
       setErrorMessage("Login failed. Please try again.");
     }
   };
+
 
   return (
     <div
@@ -179,7 +184,7 @@ const Signup = () => {
           </div>
         </div>
       </div>
-      <p className="text-transparent"> {userRole}</p>
+      {/* <p className="text-transparent"> {userRole}</p> */}
     </div>
   );
 };

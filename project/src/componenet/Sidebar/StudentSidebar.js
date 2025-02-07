@@ -1,41 +1,40 @@
 import React, { useState } from "react";
 import {
   MdSpaceDashboard,
+  MdAssignment,
   MdOutlineLaptopChromebook,
   MdAccountCircle,
 } from "react-icons/md";
 import { PiStudentFill } from "react-icons/pi";
 import { GiNotebook } from "react-icons/gi";
-import { MdAssignmentAdd } from "react-icons/md";
-import { GrScorecard } from "react-icons/gr";
 import { HiOutlineLogout } from "react-icons/hi";
 import { FaBars } from "react-icons/fa";
 import appLogo from "../../assests/Ellipse 1.svg";
 import { useLocation, useNavigate } from "react-router-dom"; // Import hooks
 
-const AdminSidebar = ({ onMenuClick }) => {
+const StudentSidebar = ({ onMenuClick }) => {
   const location = useLocation(); // Get current route
   const navigate = useNavigate(); // Initialize navigation
   const [isOpen, setIsOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-  // Define route mappings
+  // Define route mappings for the student
   const pageRoutes = {
-    dashboard: "/admin/dashboard", // ✅ Fixed path
-    students: "/admin/students",
-    attendance: "/admin/attendance",
-    assignments: "/admin/assignments",
-    "score card": "/admin/score-card",
-    "class recordings": "/admin/class-recordings",
-    account: "/admin/account",
+    dashboard: "/student/dashboard",
+    students: "/student/students",
+    attendance: "/student/attendance",
+    assignments: "/student/assignments",
+    "score card": "/student/score-card",
+    "class recordings": "/student/class-recordings",
+    account: "/student/account",
   };
 
   const menuItems = [
     { name: "Dashboard", icon: <MdSpaceDashboard /> },
     { name: "Students", icon: <PiStudentFill /> },
     { name: "Attendance", icon: <GiNotebook /> },
-    { name: "Assignments", icon: <MdAssignmentAdd /> },
-    { name: "Score Card", icon: <GrScorecard /> },
+    { name: "Assignments", icon: <MdAssignment /> },
+    { name: "Score Card", icon: <MdOutlineLaptopChromebook /> },
     { name: "Class Recordings", icon: <MdOutlineLaptopChromebook /> },
     { name: "Account", icon: <MdAccountCircle /> },
   ];
@@ -79,7 +78,7 @@ const AdminSidebar = ({ onMenuClick }) => {
         <div className="flex flex-col items-center gap-3 mb-3">
           <img src={appLogo} alt="app-logo" className="w-[80px] h-[80px]" />
           <header className="text-center">
-            <h1 className="text-xl font-bold">VETRI vewretbfd TECHNOLOGY SOLUTIONS</h1>
+            <h1 className="text-xl font-bold">VETRI TECHNOLOGY SOLUTIONS</h1>
           </header>
         </div>
         <hr />
@@ -162,4 +161,4 @@ const AdminSidebar = ({ onMenuClick }) => {
   );
 };
 
-export default AdminSidebar;
+export default StudentSidebar;
