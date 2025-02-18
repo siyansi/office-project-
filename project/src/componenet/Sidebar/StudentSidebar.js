@@ -78,7 +78,7 @@ const StudentSidebar = ({ onMenuClick }) => {
         <div className="flex flex-col items-center gap-3 mb-3">
           <img src={appLogo} alt="app-logo" className="w-[80px] h-[80px]" />
           <header className="text-center">
-            <h1 className="text-xl font-bold">VETRI TECHNOLOGY SOLUTIONS</h1>
+            <h1 className="text-xl font-bold">SIMON TECHNOLOGY SOLUTIONS</h1>
           </header>
         </div>
         <hr />

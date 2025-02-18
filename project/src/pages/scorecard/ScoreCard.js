@@ -5,7 +5,9 @@ const ScoreCard = () => {
   const [data, setData] = useState([]);
   const [students, setStudents] = useState([]);
   const [actionRow, setActionRow] = useState(null);
-  const [refresh, setRefresh] = useState(false); 
+  const [selectedId, setSelectedId] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const [scoreCardForm, setScoreCardForm] = useState({
     trainerName: "",
     courseName: "",
@@ -102,50 +104,50 @@ const ScoreCard = () => {
   };
 
   // Handle form submission to create a new scorecard
-    // Handle form submission to create a new scorecard
-    const handleSubmit = (e) => {
-      e.preventDefault();
-  
-      const total = calculateTotal(); 
-  
-      const scoreCardData = {
-        traineeId: scoreCardForm.studentId, 
-        trainerName: scoreCardForm.trainerName,
-        trainingTime: scoreCardForm.trainingTime,
-        workAssigned: scoreCardForm.workAssigned,
-        workCompleted: scoreCardForm.workCompleted,
-        workPending: scoreCardForm.workPending,
-        communication: Number(scoreCardForm.communication) || 0, 
-        attendance: Number(scoreCardForm.attendance) || 0,
-        attitude: Number(scoreCardForm.attitude) || 0,
-        total,
-      };
-  
-      axios
-        .post("http://localhost:5005/api/scorecards/add", scoreCardData)
-        .then((response) => {
-          setRefresh((prev) => !prev); // Trigger data refetch
-          console.log("ScoreCard added successfully", response.data);
-          setModalOpen(false); // Close the modal
-          setScoreCardForm({
-            trainerName: "",
-            courseName: "",
-            trainingDate: "",
-            trainingTime: "",
-            workAssigned: "",
-            workCompleted: "",
-            workPending: "",
-            communication: 0,
-            attendance: 0,
-            attitude: 0,
-            total: 0,
-          }); // Reset the form
-        })
-        .catch((error) => {
-          console.error("Error adding score card", error);
-          alert("Failed to add score card");
-        });
+  // Handle form submission to create a new scorecard
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const total = calculateTotal();
+
+    const scoreCardData = {
+      traineeId: scoreCardForm.studentId,
+      trainerName: scoreCardForm.trainerName,
+      trainingTime: scoreCardForm.trainingTime,
+      workAssigned: scoreCardForm.workAssigned,
+      workCompleted: scoreCardForm.workCompleted,
+      workPending: scoreCardForm.workPending,
+      communication: Number(scoreCardForm.communication) || 0,
+      attendance: Number(scoreCardForm.attendance) || 0,
+      attitude: Number(scoreCardForm.attitude) || 0,
+      total,
     };
+
+    axios
+      .post("http://localhost:5005/api/scorecards/add", scoreCardData)
+      .then((response) => {
+        setRefresh((prev) => !prev); // Trigger data refetch
+        console.log("ScoreCard added successfully", response.data);
+        setModalOpen(false); // Close the modal
+        setScoreCardForm({
+          trainerName: "",
+          courseName: "",
+          trainingDate: "",
+          trainingTime: "",
+          workAssigned: "",
+          workCompleted: "",
+          workPending: "",
+          communication: 0,
+          attendance: 0,
+          attitude: 0,
+          total: 0,
+        }); // Reset the form
+      })
+      .catch((error) => {
+        console.error("Error adding score card", error);
+        alert("Failed to add score card");
+      });
+  };
   // Handle pagination
   const indexOfLastRow = currentPage * rowsPerPage;
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
@@ -168,7 +170,6 @@ const ScoreCard = () => {
     // Navigate to a new page with the student ID as a URL parameter
     navigate(`/scoreboard/${id}`);
   };
-
 
   return (
     <div className="p-6 min-h-screen md:px-20">
@@ -246,10 +247,9 @@ const ScoreCard = () => {
                         </div>
 
                         <button
-                           onClick={() => handleView(row._id)} // <-- View button click
+                          onClick={() => handleView(row._id)} // <-- View button click
                           className="absolute top-8 left-1/2 text-[70%] w-[40%] transform -translate-x-1/2 px-3 py- bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600"
                         >
-                          
                           View
                         </button>
                       </div>

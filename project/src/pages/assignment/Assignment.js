@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
-const Assignment = () => {
+const Assignment = ({ assignmentId }) => {
   const [assignments, setAssignments] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 8;
@@ -26,35 +26,49 @@ const Assignment = () => {
 
   const fetchAssignments = async () => {
     try {
-      const response = await axios.get("http://localhost:5005/api/assignments/see");
+      const response = await axios.get(
+        "http://localhost:5005/api/assignments/see"
+      );
       setAssignments(response.data);
     } catch (error) {
       console.error("Error fetching assignments:", error);
       console.log("Attachment:", newAssignment.attachment);
-
     }
   };
-  
+
   // Display assignment with attachment
   const renderAttachment = (attachment) => {
     if (!attachment) return null;
-    if (!attachment.mimetype || !attachment.data) return <p>Invalid attachment</p>;
-  
+    if (!attachment.mimetype || !attachment.data)
+      return <p>Invalid attachment</p>;
+
     const { data, mimetype, filename } = attachment;
     const base64Data = `data:${mimetype};base64,${data}`;
-  
+
     if (mimetype.startsWith("image")) {
-      return <img src={base64Data} alt={filename} className="max-w-full h-auto" />;
+      return (
+        <img src={base64Data} alt={filename} className="max-w-full h-auto" />
+      );
     } else if (mimetype.startsWith("video")) {
       return <video controls src={base64Data} className="w-full" />;
     } else if (mimetype.startsWith("application/pdf")) {
-      return <embed src={base64Data} type="application/pdf" width="600" height="400" />;
+      return (
+        <embed
+          src={base64Data}
+          type="application/pdf"
+          width="600"
+          height="400"
+        />
+      );
     } else {
-      return <a href={base64Data} download={filename}>Download {filename}</a>;
+      return (
+        <a href={base64Data} download={filename}>
+          Download {filename}
+        </a>
+      );
     }
-    
   };
-  
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
@@ -75,6 +89,23 @@ const Assignment = () => {
     setIsCreateModalOpen(false); // Close the create modal if it's open
   };
 
+
+  const fetchAssignment = async (assignmentId) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/assignments/${assignmentId}`);
+      const data = await response.json();
+      setSelectedAssignment(data);
+    } catch (error) {
+      console.error("Error fetching assignment:", error);
+    }
+  };
+// Call this function when opening the modal
+useEffect(() => {
+  if (isViewModalOpen && assignmentId) {
+    fetchAssignment(assignmentId);
+  }
+
+}, [isViewModalOpen, assignmentId]);
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:5005/api/assignments/${id}`);
@@ -91,12 +122,12 @@ const Assignment = () => {
       formData.append("deadline", newAssignment.deadline); // Ensure deadline is in the right format
       formData.append("topic", newAssignment.topic);
       formData.append("assignee", selectedStudent);
-  
+
       // If there's an attachment, append it to the form data
       if (newAssignment.attachment) {
         formData.append("attachment", newAssignment.attachment);
       }
-  
+
       try {
         const res = await axios.post(
           "http://localhost:5005/api/assignments/add",
@@ -119,13 +150,12 @@ const Assignment = () => {
       } catch (error) {
         console.error("Error adding assignment:", error);
         console.log("Attachment:", newAssignment.attachment);
-
       }
     } else {
       alert("Please fill all fields before publishing.");
     }
   };
-  
+
   console.log("assignments", assignments);
 
   const indexOfLastRow = currentPage * rowsPerPage;
@@ -344,100 +374,95 @@ const Assignment = () => {
               </button>
             </div>
           </div>
-          
-          
         </div>
       )}
 
-
-{isViewModalOpen && (
-            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-              <div className="bg-white p-4 m-4 md:p-8 rounded-lg shadow-lg w-full md:w-[60%] overflow-y-auto">
-                <h2 className="mb-5">Assignment Details</h2>
-                <div className="grid gap-4 ">
-
-                <div className="flex items-center gap-3 bg-[#50E3C2] rounded-[7px] border border-[#50E3C2]  ">
-  <label className="block text-sm font-semibold m-3 w-[30%]">
-    Name:
-  </label>
-  <input
-    type="text"
-    value={selectedAssignment.name}
-    readOnly
-    className="w-[70%] px-4 py-2 outline-none bg-transparent border-l-2 border-l-black p-2 focus:outline-none text-black"
-  />
-</div>
-
-<div className="flex items-center gap-3  bg-[#F0F0F0]  rounded-[7px] border border-[#50E3C2]">
-  <label className="block text-sm font-semibold m-3 w-[30%]">
-    Deadline:
-  </label>
-  <input
-    type="text"
-    value={selectedAssignment.deadline}
-    readOnly
-    className="w-[70%] px-4 py-2 outline-none bg-transparent border-l-2 border-l-black p-2 focus:outline-none text-black"
-  />
-</div>
-
-<div className="flex items-center gap-3 bg-[#50E3C2] rounded-[7px] border border-[#50E3C2]">
-  <label className="block text-sm font-semibold m-3 w-[30%]">
-    Topic:
-  </label>
-  <input
-    type="text"
-    value={selectedAssignment.topic}
-    readOnly
-    className="w-[70%] px-4 py-2 outline-none bg-transparent border-l-2 border-l-black focus:outline-none text-black"
-  />
-</div>
-
-<div className="flex items-center gap-3 bg-[#F0F0F0] rounded-[7px] border border-[#50E3C2]">
-  <label className="block text-sm font-semibold m-3 w-[30%]">
-    Attachment:
-  </label>
-  <input
-    type="file"
-    onChange={(e) => {
-      const file = e.target.files[0];
-      setNewAssignment((prev) => ({
-        ...prev,
-        attachment: file,
-      }));
-    }}
-    className="w-[70%] px-4 py-2 outline-none bg-transparent border-l-2 border-l-black focus:outline-none text-black"
-  />
-</div>
-
-<div className="mt-4">
-  {newAssignment.attachment && (
-    <div className="border p-3 rounded-md">
-      <h3 className="text-sm font-semibold">Attachment Preview:</h3>
-      {renderAttachment(newAssignment.attachment)}
-    </div>
-  )}
-</div>
-{/* <div>
-{assignments.map((assignment) => (
-      <div className="f" key={assignment._id}>
-       
-       <p> {renderAttachment(assignment.attachment)}</p> 
-      </div>
-    ))}
-  </div> */}
-
-</div>
-                <div className="flex justify-end mt-6 space-x-4">
-                  <button
-                    onClick={() => setIsViewModalOpen(false)}
-                    className="px-6 py-2 bg-gray-300 rounded-lg shadow-md hover:bg-gray-400"
-                  >
-                    Close
-                  </button>
-                </div>
+      {isViewModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-4 m-4 md:p-8 rounded-lg shadow-lg w-full md:w-[60%] overflow-y-auto">
+            <h2 className="mb-5">Assignment Details</h2>
+            <div className="grid gap-4 ">
+              <div className="flex items-center gap-3 bg-[#50E3C2] rounded-[7px] border border-[#50E3C2]  ">
+                <label className="block text-sm font-semibold m-3 w-[30%]">
+                  Name:
+                </label>
+                <input
+                  type="text"
+                  value={selectedAssignment.name}
+                  readOnly
+                  className="w-[70%] px-4 py-2 outline-none bg-transparent border-l-2 border-l-black p-2 focus:outline-none text-black"
+                />
               </div>
-            </div>
+
+              <div className="flex items-center gap-3  bg-[#F0F0F0]  rounded-[7px] border border-[#50E3C2]">
+                <label className="block text-sm font-semibold m-3 w-[30%]">
+                  Deadline:
+                </label>
+                <input
+                  type="text"
+                  value={selectedAssignment.deadline}
+                  readOnly
+                  className="w-[70%] px-4 py-2 outline-none bg-transparent border-l-2 border-l-black p-2 focus:outline-none text-black"
+                />
+              </div>
+
+              <div className="flex items-center gap-3 bg-[#50E3C2] rounded-[7px] border border-[#50E3C2]">
+                <label className="block text-sm font-semibold m-3 w-[30%]">
+                  Topic:
+                </label>
+                <input
+                  type="text"
+                  value={selectedAssignment.topic}
+                  readOnly
+                  className="w-[70%] px-4 py-2 outline-none bg-transparent border-l-2 border-l-black focus:outline-none text-black"
+                />
+              </div>
+
+             <div className="flex items-center gap-3 bg-[#F0F0F0] rounded-[7px] border border-[#50E3C2]">
+  <label className="block text-sm font-semibold m-3 w-[30%]">
+    Attachments:
+  </label>
+  <div className="w-[70%] px-4 py-2">
+    {selectedAssignment?.attachments?.length > 0 ? (
+      selectedAssignment.attachments.map((file, index) => (
+        <div key={index} className="mb-2">
+          {file.data.startsWith("data:image") ? (
+            // If the file is an image, display it
+            <img
+              src={file.data}
+              alt={file.filename}
+              className="w-32 h-32 object-cover rounded-md"
+            />
+          ) : (
+            // Otherwise, provide a download link
+            <a
+              href={file.data}
+              download={file.filename}
+              className="text-blue-500 underline"
+            >
+              {file.filename}
+            </a>
           )}
+        </div>
+      ))
+    ) : (
+      <p className="text-gray-500">No attachments available</p>
+    )}
+  </div>
+</div>
+
+            </div>
+            <div className="flex justify-end mt-6 space-x-4">
+              <button
+                onClick={() => setIsViewModalOpen(false)}
+                className="px-6 py-2 bg-gray-300 rounded-lg shadow-md hover:bg-gray-400"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import moment from "moment";
+import Navbar from "../../componenet/navbar/Navbar";
+import AdminSidebar from "../../componenet/Sidebar/Sidebar";
 
 const ScoreboardDetails = () => {
   const { id } = useParams(); // Extract the scorecard ID from the URL
@@ -52,7 +54,14 @@ const ScoreboardDetails = () => {
   
 
   return (
-    <div className="flex flex-col items-center justify-c min-h-screen bg-teal-200 p-4">
+    <div className="">
+<div className="w-[%] ml-0 md:ml-60  ">
+      <Navbar  />
+      </div>
+    <div className="flex flex-col px-20 items-center justify-c min-h-screen mt-8 bg-teal-200 p-4">
+      
+     
+      <AdminSidebar/>
       <div className="bg-white w-full max-w-4xl mt-6 rounded-lg shadow-xl p-6">
         {/* Title */}
         <h1 className="text-2xl font-bold text-center text-teal-700 mb-4">
@@ -113,6 +122,7 @@ const ScoreboardDetails = () => {
           </button>
         </div>
       </div>
+    </div>
     </div>
   );
 };

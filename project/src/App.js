@@ -14,7 +14,11 @@ import ScoreCardDetails from "./pages/scorecard/scoreCardDetails";
 import Student from "./pages/student/Student";
 import StudentDetails from "./pages/student/studentpage/StudentDetails";
 import StudentAttendance from "./pages/attened/StudentAttendance";
-import ScoreboardDetails from "./pages/scorecard/scoreCardDetails";
+// import ScoreboardDetails from "./pages/scorecard/scoreCardDetails";
+import StudentNavbar from "./componenet/navbar/StudentNavbar";
+import StudentAssignments from "./pages/assignment/StudentAssignment";
+import ScoreDetails from "./pages/scorecard/StudentScoreCard";
+import StudentAccount from "./pages/account/StudentAccount";
 
 // Protected Route Component
 const ProtectedRoute = ({ element, allowedRoles }) => {
@@ -32,15 +36,15 @@ const StudentLayout = () => (
   <div className="flex w-full overflow-x-hidden">
     <StudentSidebar onMenuClick={handleMenuSelection2} />
     <div className="w-full">
-      <Navbar />
+      <StudentNavbar />
       <Routes>
         <Route path="dashboard" element={<Dashboardpage />} />
         <Route path="students" element={<StudentDetails />} />
         <Route path="attendance" element={<StudentAttendance />} />
-        <Route path="assignments" element={<Assignment />} />
-        <Route path="score-card" element={<ScoreboardDetails />} />
+        <Route path="assignments" element={<StudentAssignments/>} />
+        <Route path="score-card" element={<ScoreDetails />} />
         <Route path="class-recordings" element={<ClassRecording />} />
-        <Route path="account" element={<Account />} />
+        <Route path="account" element={<StudentAccount />} />
       </Routes>
     </div>
   </div>
@@ -98,6 +102,7 @@ const App = () => {
 };
 
 export default App;
+
 
 
 // import React from "react";

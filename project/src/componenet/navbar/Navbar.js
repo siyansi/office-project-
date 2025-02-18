@@ -1,32 +1,33 @@
+
 import React, { useEffect, useState } from "react";
 import mad from "../../assests/55311.jpg";
 
 const Navbar = () => {
-  const [userName, setUserName] = useState("");
-  const [userRole, setUserRole] = useState("");
+  const [adminName, setAdminName] = useState("");
+  const [adminRole, setAdminRole] = useState("");
 
-  const studentId = localStorage.getItem("studentId");
+  const adminId = localStorage.getItem("adminId");
 
   useEffect(() => {
-    const fetchUserDetails = async () => {
-      if (!studentId) return;
+    const fetchAdminDetails = async () => {
+      if (!adminId) return;
 
       try {
         const response = await fetch(
-          `http://localhost:5005/api/students/${studentId}`
+          `http://localhost:5005/auth/user/user/${adminId}`
         );
-        if (!response.ok) throw new Error("Failed to fetch user details");
+        if (!response.ok) throw new Error("Failed to fetch admin details");
 
         const data = await response.json();
-        setUserName(data.fullName || "User");
-        setUserRole(data.role || "Guest"); // Default role if not found
+        setAdminName(data.fullName || "Admin");
+        setAdminRole(data.role || "Admin Dashboard");
       } catch (error) {
-        console.error("Error fetching user details:", error);
+        console.error("Error fetching admin details:", error);
       }
     };
 
-    fetchUserDetails();
-  }, [studentId]);
+    fetchAdminDetails();
+  }, [adminId]);
 
   return (
     <div
@@ -38,10 +39,10 @@ const Navbar = () => {
         {/* Greeting */}
         <div>
           <h1 className="text-2xl md:text-3xl text-orange-400 font-bold">
-            Hello {userName} 👋
+            Hello {adminName} 👋
           </h1>
           <h2 className="text-black text-sm md:text-xl font-normal">
-            Welcome to {userRole} Dashboard
+            Welcome to {adminRole} Dashboard
           </h2>
         </div>
       </div>
@@ -62,6 +63,7 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
 
 
 

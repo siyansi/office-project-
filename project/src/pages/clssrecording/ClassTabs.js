@@ -69,6 +69,7 @@ const ClassTabs = ({ selectedTab, onTabChange }) => {
       <input
         type="radio"
         name="my_tabs_1"
+        
         role="radio"
         className={`${tabClass("previous")} font-medium text-xl`}
         id="previous-tab"
