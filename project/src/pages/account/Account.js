@@ -102,51 +102,68 @@
 
 // export default Account;
 
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Audio } from "react-loader-spinner";
 import img from "../../assests/55311.jpg";
 
-const Account = () => {
-  const [userDetails, setUserDetails] = useState(null);
-  const userId = localStorage.getItem("studentId"); // User ID from localStorage
-  const userRole = localStorage.getItem("role"); // Role from localStorage
+const AdminAccount = () => {
+  const [adminDetails, setAdminDetails] = useState(null);
+  const [loading, setLoading] = useState(true); // ⬅ Added loading state
+  const adminId = localStorage.getItem("adminId"); // Admin ID from localStorage
 
   useEffect(() => {
-    const fetchUserDetails = async () => {
-      if (!userId || !userRole) return;
+    const fetchAdminDetails = async () => {
+      if (!adminId) {
+        setLoading(false);
+        return;
+      }
 
       try {
-        // ✅ Check role and fetch from the correct API
-        const endpoint =
-          userRole === "Admin"
-            ? `http://localhost:5005/api/admins/${userId}`
-            : `http://localhost:5005/api/students/${userId}`;
-
-        const response = await axios.get(endpoint);
-        setUserDetails(response.data);
+        const response = await axios.get(
+          `http://localhost:5005/auth/user/user/${adminId}`
+        );
+        setAdminDetails(response.data);
       } catch (error) {
-        console.error("Error fetching user details:", error);
+        console.error("Error fetching admin details:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchUserDetails();
-  }, [userId, userRole]);
+    fetchAdminDetails();
+  }, [adminId]);
 
-  if (!userDetails) {
-    return <div className="p-6 md:px-20">Loading...</div>;
+  // Show loading spinner if data is still loading
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Audio height={50} width={100}  color="#F5A623" ariaLabel="loading" />
+      </div>
+    );
+  }
+
+  // Show message if no admin details found
+  if (!adminDetails) {
+    return (
+      <div className="p-6 md:px-20 text-center text-gray-500">
+        <h2>No admin details available.</h2>
+      </div>
+    );
   }
 
   return (
     <div className="p-6 md:px-20">
-      <h1 className="text-3xl font-semibold mb-4">Account Details</h1>
+      <h1 className="text-3xl font-semibold mb-4">Admin Account Details</h1>
       <div className="flex mb-6">
         <div className="w-32 h-32 border-4 border-blue-400 rounded-full overflow-hidden">
           <img src={img} alt="Profile" className="w-full h-full object-cover" />
         </div>
         <div className="ml-6 flex flex-col justify-center">
-          <h2 className="text-xl font-semibold">{userDetails.fullName}</h2>
-          <p className="text-sm text-gray-600">ID: {userDetails.registerNumber || userDetails.adminId}</p>
-          <p className="text-sm text-gray-600">Role: {userRole}</p>
+          <h2 className="text-xl font-semibold">{adminDetails.fullName}</h2>
+          <p className="text-sm text-gray-600">ID: {adminDetails.adminNumber}</p>
+          <p className="text-sm text-gray-600">Role: {adminDetails.role}</p>
         </div>
       </div>
 
@@ -154,25 +171,31 @@ const Account = () => {
         <table className="w-full">
           <tbody>
             {Object.entries({
-              Name: userDetails.fullName,
-              "Register ID": userDetails.registerNumber || userDetails.adminId,
-              Gender: userDetails.gender || "N/A",
-              "Join Date": userDetails.admissionDate
-                ? new Date(userDetails.admissionDate).toLocaleDateString()
+              "Admin Name": adminDetails.fullName,
+              "Admin ID": adminDetails.adminNumber,
+              Gender: adminDetails.gender || "N/A",
+              "Joining Date": adminDetails.joiningDate
+                ? new Date(adminDetails.joiningDate).toLocaleDateString()
                 : "N/A",
-              Course: userDetails.course || "N/A",
-              State: userDetails.state || "N/A",
-              District: userDetails.district || "N/A",
-              "Zip Code": userDetails.zipCode || "N/A",
-              Address: userDetails.address || "N/A",
-              "Mobile No": userDetails.mobileNumber || "N/A",
-              Email: userDetails.email,
+              Department: adminDetails.department || "N/A",
+              State: adminDetails.state || "N/A",
+              District: adminDetails.district || "N/A",
+              "Zip Code": adminDetails.zipCode || "N/A",
+              Address: adminDetails.address || "N/A",
+              "Work Experience": adminDetails.workExperience || "N/A",
+              "Mobile No": adminDetails.mobileNumber || "N/A",
+              Email: adminDetails.email,
             }).map(([key, value], index) => (
-              <tr key={key} className={index % 2 === 0 ? "bg-[#F0F0F0]" : "bg-[#50E3C2]"}>
+              <tr
+                key={key}
+                className={index % 2 === 0 ? "bg-[#F0F0F0]" : "bg-[#50E3C2]"}
+              >
                 <td className="p-2 border-r border-b-8 rounded-l-xl border-white font-semibold">
                   {key}
                 </td>
-                <td className="p-2 border-b-8 rounded-r-xl border-white pl-10">{value}</td>
+                <td className="p-2 border-b-8 rounded-r-xl border-white pl-10">
+                  {value}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -182,4 +205,4 @@ const Account = () => {
   );
 };
 
-export default Account;
+export default AdminAccount;

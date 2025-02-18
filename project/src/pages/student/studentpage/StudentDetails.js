@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Doughnut } from 'react-chartjs-2';
 import mad from "../../../assests/55311.jpg";
 import axios from "axios";
+import { Audio } from 'react-loader-spinner';
 
 const StudentDetails = () => {
   const navigate = useNavigate();
@@ -36,8 +37,13 @@ const StudentDetails = () => {
     fetchStudentDetails();
   }, [studentId, navigate]);
 
-  if (loading) return <div className="p-6 text-gray-500">Loading student details...</div>;
-  if (error) return <div className="p-6 text-red-500">{error}</div>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Audio height={80} width={80} color="#F5A623" ariaLabel="loading" />
+      </div>
+    );
+  }  if (error) return <div className="p-6 text-red-500">{error}</div>;
   if (!studentData) return <div className="p-6 text-red-500">No student found.</div>;
 
   // Destructure student data
@@ -165,7 +171,7 @@ const StudentDetails = () => {
           <div className="p-4 bg-pink-100 shadow-md rounded-lg text-center">
             <h3 className="text-lg font-semibold">Attendance</h3>
             <Doughnut data={attendanceData} />
-            <Link to={"/attendance"} >
+            <Link to={"/student/attendance"} >
               <button className="mt-4 bg-pink-500 text-white py-1 px-4 rounded-lg">View Details</button>
             </Link>
           </div>
@@ -177,7 +183,7 @@ const StudentDetails = () => {
           <div className="p-4 bg-purple-100 shadow-md rounded-lg text-center">
             <h3 className="text-lg font-semibold">Assignments</h3>
             <Doughnut data={assignmentsData} />
-            <Link to={"/assignments"} >
+            <Link to={"/student/assignments"} >
               <button className="mt-4 bg-purple-500 text-white py-1 px-4 rounded-lg">View Details</button>
             </Link>
           </div>

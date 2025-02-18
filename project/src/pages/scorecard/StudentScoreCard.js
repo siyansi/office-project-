@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import axios from "axios";
 import moment from "moment";
 
-const ScoreboardDetails = () => {
-  const loggedInStudent = useSelector((state) => state.auth.user);
-  const studentId = loggedInStudent?._id || localStorage.getItem("studentId"); // Get student ID
-
+const ScoreDetails = () => {
   const [scoreDetails, setScoreDetails] = useState(null);
-  const [loading, setLoading] = useState(true); // State for loading
+  const [loading, setLoading] = useState(true);
+  
+  // ✅ Always fetch student ID from localStorage
+  const studentId = localStorage.getItem("studentId");
 
   useEffect(() => {
     if (!studentId) return;
 
     axios
-      .get(`http://localhost:5005/api/scorecards/${studentId}`)
+      .get(`http://localhost:5005/api/scorecards/student/${studentId}`)
       .then((response) => {
         setScoreDetails(response.data);
         setLoading(false);
@@ -103,4 +102,4 @@ const DetailCard = ({ label, value }) => (
   </div>
 );
 
-export default ScoreboardDetails;
+export default ScoreDetails;

@@ -24,28 +24,37 @@ const Signup = () => {
         setErrorMessage("Username and Password are required");
         return;
       }
-
+  
       const res = await axios.post("http://localhost:5005/auth/user/login", {
         email: username,
         password,
       });
-
+  
       if (res.status === 200) {
         const token = res.data.token;
-        Cookies.set("token", token, { expires: 1 }); 
-
+        Cookies.set("token", token, { expires: 1 });
+  
         const decodedToken = jwtDecode(token);
         const userRole = decodedToken.role;
-        const studentId = decodedToken.id;
-
-        // ✅ Store user details
+        const userId = decodedToken.id;
+        const registerNumber = decodedToken.registerNumber;
+  
+        // if (!registerNumber) {
+        //   console.error("❌ registerNumber is missing from token!");
+        //   return;
+        // }
+  
+        // ✅ Store `registerNumber` as `assignee`
+        console.log("✅ Storing assignee:", registerNumber);
+        localStorage.setItem("assignee", registerNumber);
         localStorage.setItem("role", userRole);
-        localStorage.setItem("studentId", studentId);
-        localStorage.setItem("token", token); 
-
+        localStorage.setItem("token", token);
+  
         if (userRole === "Admin") {
+          localStorage.setItem("adminId", userId);
           navigate("/admin/dashboard");
         } else if (userRole === "Student") {
+          localStorage.setItem("studentId", userId);
           navigate("/student/dashboard");
         } else {
           setErrorMessage("Unauthorized role access");
@@ -58,7 +67,7 @@ const Signup = () => {
       setErrorMessage("Login failed. Please try again.");
     }
   };
-
+  
 
   return (
     <div
